@@ -9,18 +9,13 @@
         TrackingAPI.get_database |> memoize_cache |> empty!
     end
 
-    @testset "custom database file" begin
-        ENV["TRACKINGAPI_DB_FILE"] = "trackingapi_test.db"
+    ENV["TRACKINGAPI_DB_FILE"] = "trackingapi_test.db"
 
+    @testset "custom database file" begin
         db = TrackingAPI.get_database()
 
         @test db isa SQLite.DB
         @test db.file == "trackingapi_test.db"
-
-        "trackingapi_test.db" |> rm
-
-        delete!(ENV, "TRACKINGAPI_DB_FILE")
-        TrackingAPI.get_database |> memoize_cache |> empty!
     end
 
     @testset "check memoization" begin
@@ -28,7 +23,22 @@
         db2 = TrackingAPI.get_database()
 
         @test db1 === db2
-
-        "trackingapi.db" |> rm
     end
+
+    @testset "initialize database" begin
+        TrackingAPI.initialize_database()
+
+        rows = DBInterface.execute(TrackingAPI.get_database(),
+            "SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name")
+
+        for row in rows
+            @test row isa SQLite.Row
+            @test keys(row) == [:name]
+            @test values(row) in [["user"], ["project"], ["user_project"]]
+        end
+    end
+
+    "trackingapi_test.db" |> rm
+    TrackingAPI.get_database |> memoize_cache |> empty!
+    delete!(ENV, "TRACKINGAPI_DB_FILE")
 end

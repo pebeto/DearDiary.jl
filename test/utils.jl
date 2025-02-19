@@ -1,11 +1,11 @@
 @testset verbose = true "load env file" begin
+    file = ".env.trackingapitest"
+
     @testset "file exists" begin
-        file = ".env.trackingapitest"
         open(file, "w") do io
             write(io, "TRACKINGAPI_DB_FILE=trackingapi_test.db")
         end
-
-        TrackingAPI.load_env_file(file)
+        file |> TrackingAPI.load_env_file
 
         @test ENV["TRACKINGAPI_DB_FILE"] == "trackingapi_test.db"
 
@@ -13,12 +13,10 @@
     end
 
     @testset "file does not exist" begin
-        file = ".env.trackingapitest"
-        if isfile(file)
-            rm(file)
+        if (file |> isfile)
+            file |> rm
         end
-
-        TrackingAPI.load_env_file(file)
+        file |> TrackingAPI.load_env_file
 
         @test !haskey(ENV, "TRACKINGAPI_DB_FILE")
     end

@@ -15,6 +15,13 @@ The function is memoized, so the database connection will be reused across calls
     haskey(ENV, "TRACKINGAPI_DB_FILE") ? ENV["TRACKINGAPI_DB_FILE"] : "trackingapi.db"
 )
 
-function initialize_database(; database::SQLite.DB=get_database())
+"""
+    initialize_database(; database::SQLite.DB=get_database())
 
+Initializes the database by creating the necessary tables.
+"""
+function initialize_database(; database::SQLite.DB=get_database())
+    DBInterface.execute(database, SQL_CREATE_USER)
+    DBInterface.execute(database, SQL_CREATE_PROJECT)
+    DBInterface.execute(database, SQL_CREATE_USERPROJECT)
 end

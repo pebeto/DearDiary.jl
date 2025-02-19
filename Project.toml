@@ -12,13 +12,13 @@ Oxygen = "df9a0d86-3283-4920-82dc-4555fc0d1d8b"
 SQLite = "0aa819cd-b072-5ff4-a722-6bc24af294d9"
 
 [compat]
-Compat = "v4.14.0"
-HTTP = "1.10.3"
+Compat = "v4.16.0"
+HTTP = "1.10.15"
 JSON = "0.21.4"
 Memoize = "0.4.4"
-Oxygen = "1.5.2"
+Oxygen = "1.7.1"
 SQLite = "1.6.1"
-julia = "1.6"
+julia = "1.0"
 
 [extras]
 Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
