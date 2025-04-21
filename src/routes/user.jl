@@ -25,15 +25,13 @@ function get_users_handler(::HTTP.Request)::HTTP.Response
 end
 
 """
-    create_user_handler(request::HTTP.Request, parameters::Json{UserPayload})::HTTP.Response
+    create_user_handler(request::HTTP.Request, parameters::Json{UserCreatePayload})::HTTP.Response
 
 !!! warning
     This function is for route handling and should not be called directly.
 """
-function create_user_handler(::HTTP.Request, parameters::Json{UserPayload})::HTTP.Response
-    user_payload = parameters.payload
-    upsert_result = create_user(user_payload.first_name, user_payload.last_name,
-        user_payload.username, user_payload.password)
+function create_user_handler(::HTTP.Request, parameters::Json{UserCreatePayload})::HTTP.Response
+    upsert_result = parameters.payload |> create_user
     upsert_status = upsert_result |> get_status_by_upsert_result
     return json(("message" => upsert_result); status=upsert_status)
 end

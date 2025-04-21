@@ -23,7 +23,7 @@ User(data::Dict{String, Any}) = User(data["id"], data["first_name"], data["last_
     data["username"], (data["created_at"] |> DateTime))
 
 """
-    UserPayload
+    UserCreatePayload
 
 A struct that represents the payload for creating a user.
 
@@ -33,9 +33,25 @@ A struct that represents the payload for creating a user.
 - `username::String`: The username of the user.
 - `password::String`: The password of the user.
 """
-struct UserPayload
+struct UserCreatePayload
     first_name::String
     last_name::String
     username::String
     password::String
+end
+
+"""
+    UserUpdatePayload
+
+A struct that represents the payload for updating a user.
+
+# Fields
+- `first_name::Union{String, Nothing}`: The first name of the user.
+- `last_name::Union{String, Nothing}`: The last name of the user.
+- `password::Union{String, Nothing}`: The password of the user.
+"""
+struct UserUpdatePayload
+    first_name::Union{String, Nothing}
+    last_name::Union{String, Nothing}
+    password::Union{String, Nothing}
 end

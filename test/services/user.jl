@@ -1,6 +1,7 @@
 @with_trackingapi_test_db begin
     @testset verbose = true "create user" begin
-        upsert_result = TrackingAPI.create_user("Missy", "Gala", "missy", "gala")
+        payload = TrackingAPI.UserCreatePayload("Missy", "Gala", "missy", "gala")
+        upsert_result = TrackingAPI.create_user(payload)
 
         @test upsert_result == TrackingAPI.CREATED
     end
@@ -23,7 +24,8 @@
     end
 
     @testset verbose = true "get_users" begin
-        TrackingAPI.create_user("Gala", "Missy", "gala", "missy")
+        payload = TrackingAPI.UserCreatePayload("Gala", "Missy", "gala", "missy")
+        TrackingAPI.create_user(payload)
         users = TrackingAPI.get_users()
 
         @test users isa Array{TrackingAPI.User,1}
