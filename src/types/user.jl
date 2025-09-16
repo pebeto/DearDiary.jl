@@ -10,7 +10,7 @@ A struct that represents a user.
 - `username::String`: The username of the user.
 - `password::String`: The password of the user. This is a hashed version of the password,
     not the plain text password.
-- `created_at::DateTime`: The date and time the user was created.
+- `created_date::DateTime`: The date and time the user was created.
 - `is_admin::Bool`: Whether the user is an administrator.
 """
 struct User <: ResultType
@@ -19,13 +19,9 @@ struct User <: ResultType
     last_name::String
     username::String
     password::String
-    created_at::DateTime
+    created_date::DateTime
     is_admin::Bool
 end
-User(data::Dict{Symbol,Any}) = User(data[:id], data[:first_name], data[:last_name],
-    data[:username], data[:password], (data[:created_at] |> DateTime), data[:is_admin])
-User(data::Dict{String,Any}) = User(data["id"], data["first_name"], data["last_name"],
-    data["username"], data["password"], (data["created_at"] |> DateTime), data["is_admin"])
 
 """
     UserCreatePayload

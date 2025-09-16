@@ -2,15 +2,16 @@
     @testset verbose = true "user repository" begin
         @testset verbose = true "insert user" begin
             @testset "insert with no existing username" begin
-                @test TrackingAPI.insert(TrackingAPI.User, "Missy", "Gala", "missy", "gala") == TrackingAPI.CREATED
+                @test TrackingAPI.insert(TrackingAPI.User, "Missy", "Gala", "missy", "gala") isa Tuple{Integer,TrackingAPI.Created}
             end
 
             @testset "insert with existing username" begin
-                @test TrackingAPI.insert(TrackingAPI.User, "Missy", "Gala", "missy", "gala") == TrackingAPI.DUPLICATE
+                @test TrackingAPI.insert(TrackingAPI.User, "Missy", "Gala", "missy", "gala") isa Tuple{Nothing,TrackingAPI.Duplicate}
+
             end
 
             @testset "insert with empty username" begin
-                @test TrackingAPI.insert(TrackingAPI.User, "Missy", "Gala", "", "gala") == TrackingAPI.UNPROCESSABLE
+                @test TrackingAPI.insert(TrackingAPI.User, "Missy", "Gala", "", "gala") isa Tuple{Nothing,TrackingAPI.Unprocessable}
             end
         end
 
@@ -23,7 +24,7 @@
                 @test user.first_name == "Missy"
                 @test user.last_name == "Gala"
                 @test user.username == "missy"
-                @test user.created_at isa DateTime
+                @test user.created_date isa DateTime
             end
 
             @testset "fetch by id" begin
@@ -34,7 +35,7 @@
                 @test user.first_name == "Missy"
                 @test user.last_name == "Gala"
                 @test user.username == "missy"
-                @test user.created_at isa DateTime
+                @test user.created_date isa DateTime
             end
 
 
@@ -53,7 +54,7 @@
         end
 
         @testset verbose = true "update" begin
-            @test TrackingAPI.update(TrackingAPI.User, 2; first_name="Ana", last_name=nothing) == TrackingAPI.UPDATED
+            @test TrackingAPI.update(TrackingAPI.User, 2; first_name="Ana", last_name=nothing) isa TrackingAPI.Updated
 
             user = TrackingAPI.fetch(TrackingAPI.User, "missy")
 

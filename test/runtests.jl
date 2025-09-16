@@ -55,6 +55,7 @@ file = create_test_env_file(; enable_auth=true)
 TrackingAPI.run(; env_file=file)
 
 include("routes/auth.jl")
+include("routes/utils.jl")
 
 TrackingAPI.stop()
 file |> rm
@@ -63,14 +64,17 @@ file |> rm
 file = create_test_env_file()
 TrackingAPI.run(; env_file=file)
 
+include("types/utils.jl")
+
 include("repositories/database.jl")
 include("repositories/user.jl")
+include("repositories/project.jl")
 include("repositories/utils.jl")
 
 include("services/user.jl")
 include("services/utils.jl")
+include("services/project.jl")
 
-include("routes/utils.jl")
 include("routes/health.jl")
 include("routes/user.jl")
 

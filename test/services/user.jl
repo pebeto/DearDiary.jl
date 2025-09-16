@@ -2,9 +2,10 @@
     @testset verbose = true "user service" begin
         @testset verbose = true "create user" begin
             payload = TrackingAPI.UserCreatePayload("Missy", "Gala", "missy", "gala")
-            upsert_result = TrackingAPI.create_user(payload)
+            user_id, user_upsert_result = TrackingAPI.create_user(payload)
 
-            @test upsert_result == TrackingAPI.CREATED
+            @test user_upsert_result isa TrackingAPI.Created
+            @test user_id isa Integer
         end
 
         @testset verbose = true "get_user_by_username" begin
@@ -17,7 +18,7 @@
                 @test user.last_name == "Gala"
                 @test user.username == "missy"
                 @test CompareHashAndPassword(user.password, "gala")
-                @test user.created_at isa DateTime
+                @test user.created_date isa DateTime
             end
         end
 
@@ -31,12 +32,12 @@
             users = TrackingAPI.get_users()
 
             @test users isa Array{TrackingAPI.User,1}
-            @test (users |> length) == 2
+            @test (users |> length) == 3
         end
 
         @testset verbose = true "update user" begin
             user_payload = TrackingAPI.UserUpdatePayload("Ana", nothing, nothing, nothing)
-            @test TrackingAPI.update_user(1, user_payload) == TrackingAPI.UPDATED
+            @test TrackingAPI.update_user(2, user_payload) isa TrackingAPI.Updated
 
             user = TrackingAPI.get_user_by_username("missy")
 
@@ -45,7 +46,7 @@
         end
 
         @testset verbose = true "delete user" begin
-            @test TrackingAPI.delete_user(1)
+            @test TrackingAPI.delete_user(2)
 
             @test TrackingAPI.get_user_by_username("missy") |> isnothing
         end

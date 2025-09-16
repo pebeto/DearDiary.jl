@@ -7,11 +7,11 @@
 
             @test response.status == HTTP.StatusCodes.CREATED
             data = response.body |> String |> JSON.parse
-            @test data["message"] == "CREATED"
+            @test data["user_id"] == 2
         end
 
-        @testset verbose = true "get user by username" begin
-            response = HTTP.get("http://127.0.0.1:9000/user/missy"; status_exception=false)
+        @testset verbose = true "get user by id" begin
+            response = HTTP.get("http://127.0.0.1:9000/user/2"; status_exception=false)
 
             @test response.status == HTTP.StatusCodes.OK
             data = response.body |> String |> JSON.parse
@@ -21,7 +21,7 @@
             @test user.first_name == "Missy"
             @test user.last_name == "Gala"
             @test user.username == "missy"
-            @test user.created_at isa DateTime
+            @test user.created_date isa DateTime
         end
 
         @testset verbose = true "get users" begin
@@ -36,19 +36,19 @@
             users = data .|> TrackingAPI.User
 
             @test users isa Array{TrackingAPI.User,1}
-            @test (users |> length) == 2
+            @test (users |> length) == 3
         end
 
         @testset verbose = true "update user" begin
             payload = Dict("first_name" => "Ana", "last_name" => nothing,
                 "password" => nothing) |> JSON.json
-            response = HTTP.patch("http://127.0.0.1:9000/user/1"; body=payload, status_exception=false)
+            response = HTTP.patch("http://127.0.0.1:9000/user/2"; body=payload, status_exception=false)
 
             @test response.status == HTTP.StatusCodes.OK
             data = response.body |> String |> JSON.parse
             @test data["message"] == "UPDATED"
 
-            response = HTTP.get("http://127.0.0.1:9000/user/missy"; status_exception=false)
+            response = HTTP.get("http://127.0.0.1:9000/user/2"; status_exception=false)
             data = response.body |> String |> JSON.parse
             user = data |> TrackingAPI.User
 
@@ -57,7 +57,7 @@
         end
 
         @testset verbose = true "delete user" begin
-            response = HTTP.delete("http://127.0.0.1:9000/user/1"; status_exception=false)
+            response = HTTP.delete("http://127.0.0.1:9000/user/2"; status_exception=false)
             @test response.status == HTTP.StatusCodes.OK
             data = response.body |> String |> JSON.parse
             @test data["message"] == "OK"

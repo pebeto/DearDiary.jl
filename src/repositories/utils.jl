@@ -1,11 +1,11 @@
 """
-    fetch(query::String, params::NamedTuple;
+    fetch(query::AbstractString, params::NamedTuple;
         database::SQLite.DB=get_database())::Union{Dict{Symbol,Any},Nothing}
 
 Fetch a record from the database.
 
 # Arguments
-- `query::String`: The query to execute.
+- `query::AbstractString`: The query to execute.
 - `params::NamedTuple`: The query parameters.
 
 # Keyword Arguments
@@ -14,7 +14,7 @@ Fetch a record from the database.
 # Returns
 A dictionary of the record. If the record does not exist, return `nothing`.
 """
-function fetch(query::String, params::NamedTuple)::Union{Dict{Symbol,Any},Nothing}
+function fetch(query::AbstractString, params::NamedTuple)::Union{Dict{Symbol,Any},Nothing}
     record = DBInterface.execute(get_database(), query, params)
     if (record |> isempty)
         return nothing
@@ -23,13 +23,13 @@ function fetch(query::String, params::NamedTuple)::Union{Dict{Symbol,Any},Nothin
 end
 
 """
-    fetch_all(query::String; params::NamedTuple=(;),
+    fetch_all(query::AbstractString; params::NamedTuple=(;),
         database::SQLite.DB=get_database())::Array{Dict{Symbol,Any},1}
 
 Fetch all records from the database.
 
 # Arguments
-- `query::String`: The query to execute.
+- `query::AbstractString`: The query to execute.
 - `params::NamedTuple`: The query parameters.
 
 # Keyword Arguments
@@ -38,50 +38,52 @@ Fetch all records from the database.
 # Returns
 An array of dictionaries of the records.
 """
-fetch_all(query::String; params::NamedTuple=(;))::Array{Dict{Symbol,Any},1} =
+fetch_all(query::AbstractString; params::NamedTuple=(;))::Array{Dict{Symbol,Any},1} =
     [(record |> row_to_dict) for record in DBInterface.execute(get_database(), query, params)]
 
 """
-    insert(query::String, params::NamedTuple;
-        database::SQLite.DB=get_database())::UpsertResult
+    insert(query::AbstractString, params::NamedTuple;
+        database::SQLite.DB=get_database())::Tuple{Union{Nothing,<:Integer},UpsertResult}
 
 Insert a record into the database.
 
 # Arguments
-- `query::String`: The query to execute.
+- `query::AbstractString`: The query to execute.
 - `params::NamedTuple`: The query parameters.
 
 # Keyword Arguments
 - `database::SQLite.DB`: The database connection.
 
 # Returns
-An [`UpsertResult`](@ref). `CREATED` if the record was successfully created, `DUPLICATE` if
-the record already exists, `UNPROCESSABLE` if the record violates a constraint, and `ERROR`
-if an error occurred while creating the record.
+- The inserted record ID. If an error occurs, `nothing` is returned.
+- An [`UpsertResult`](@ref). [`Created`](@ref) if the record was successfully created,
+[`Duplicate`](@ref) if the record already exists, [`Unprocessable`](@ref) if the record
+violates a constraint, and [`Error`](@ref) if an error occurred while creating the record.
 """
-function insert(query::String, params::NamedTuple)::UpsertResult
+function insert(query::AbstractString,
+    params::NamedTuple)::Tuple{Union{Nothing,<:Integer},UpsertResult}
     try
-        DBInterface.execute(get_database(), query, params)
-        return CREATED
+        record_id = (DBInterface.execute(get_database(), query, params)) |> first |> first
+        return record_id, Created()
     catch exception
         if occursin("UNIQUE constraint failed", (exception.msg |> string))
-            return DUPLICATE
+            return nothing, Duplicate()
         elseif occursin("CHECK constraint failed", (exception.msg |> string))
-            return UNPROCESSABLE
+            return nothing, Unprocessable()
         else
-            return ERROR
+            return nothing, Error()
         end
     end
 end
 
 """
-    update(query::String, object::UpsertType, params::NamedTuple;
+    update(query::AbstractString, object::UpsertType, params::NamedTuple;
         database::SQLite.DB=get_database())::UpsertResult
 
 Update a record in the database.
 
 # Arguments
-- `query::String`: The query to execute.
+- `query::AbstractString`: The query to execute.
 - `object::UpsertType`: The object to update.
 - `params::NamedTuple`: The query parameters.
 
@@ -89,10 +91,11 @@ Update a record in the database.
 - `database::SQLite.DB`: The database connection.
 
 # Returns
-An [`UpsertResult`](@ref). `UPDATED` if the record was successfully updated,
-`UNPROCESSABLE` if the record violates a constraint, and `ERROR` if an error occurred.
+An [`UpsertResult`](@ref). [`Updated`](@ref) if the record was successfully updated,
+[`Unprocessable`](@ref) if the record violates a constraint, and [`Error`](@ref) if an
+error occurred.
 """
-function update(query::String, object::Union{<:ResultType,Nothing};
+function update(query::AbstractString, object::Union{<:ResultType,Nothing};
     params...)::UpsertResult
     try
         params = params |> NamedTuple
@@ -100,23 +103,23 @@ function update(query::String, object::Union{<:ResultType,Nothing};
             ["$key=:$key" for key in (params |> keys) if params[key] |> !isnothing], ", ")
         DBInterface.execute(get_database(), replace(query, "{fields}" => fields),
             merge(params, (id=getfield(object, :id),)))
-        return UPDATED
+        return Updated()
     catch exception
         if occursin("CHECK constraint failed", (exception.msg |> string))
-            return UNPROCESSABLE
+            return Unprocessable()
         else
-            return ERROR
+            return Error()
         end
     end
 end
 
 """
-    delete(query::String, id::Integer; database::SQLite.DB=get_database())::UpsertResult
+    delete(query::AbstractString, id::Integer; database::SQLite.DB=get_database())::Bool
 
 Delete a record from the database.
 
 # Arguments
-- `query::String`: The query to execute.
+- `query::AbstractString`: The query to execute.
 - `id::Integer`: The ID of the record to delete.
 
 # Keyword Arguments
@@ -125,7 +128,7 @@ Delete a record from the database.
 # Returns
 `true` if the record was successfully deleted, `false` otherwise.
 """
-function delete(query::String, id::Integer)::Bool
+function delete(query::AbstractString, id::Integer)::Bool
     try
         DBInterface.execute(get_database(), query, (id=id,))
         return true

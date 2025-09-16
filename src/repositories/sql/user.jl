@@ -1,42 +1,56 @@
 const SQL_SELECT_USER_BY_USERNAME = "
 SELECT
-    us.ROWID as id,
-    us.first_name,
-    us.last_name,
-    us.username,
-    us.password,
-    us.created_at,
-    us.is_admin
-FROM user us WHERE us.username = :username
+    u.ROWID as id,
+    u.first_name,
+    u.last_name,
+    u.username,
+    u.password,
+    u.created_date,
+    u.is_admin
+FROM user u WHERE u.username = :username
 "
 
 const SQL_SELECT_USER_BY_ID = "
 SELECT
-    us.ROWID as id,
-    us.first_name,
-    us.last_name,
-    us.username,
-    us.password,
-    us.created_at,
-    us.is_admin
-FROM user us WHERE us.ROWID = :id
+    u.ROWID as id,
+    u.first_name,
+    u.last_name,
+    u.username,
+    u.password,
+    u.created_date,
+    u.is_admin
+FROM user u WHERE u.ROWID = :id
 "
 
 const SQL_SELECT_USERS = "
 SELECT
-    us.ROWID as id,
-    us.first_name,
-    us.last_name,
-    us.username,
-    us.password,
-    us.created_at,
-    us.is_admin
-FROM user us
+    u.ROWID as id,
+    u.first_name,
+    u.last_name,
+    u.username,
+    u.password,
+    u.created_date,
+    u.is_admin
+FROM user u
+"
+
+const SQL_SELECT_USERS_BY_PROJECT_ID = "
+SELECT
+    u.ROWID as id,
+    u.first_name,
+    u.last_name,
+    u.username,
+    u.password,
+    u.created_date,
+    u.is_admin
+FROM user u
+INNER JOIN user_permission up ON u.ROWID = up.user_id
+WHERE up.project_id = :project_id
 "
 
 const SQL_INSERT_USER = "
-INSERT INTO user (username, password, first_name, last_name, created_at)
-    VALUES (:username, :password, :first_name, :last_name, :created_at)
+INSERT INTO user (username, password, first_name, last_name, created_date)
+    VALUES (:username, :password, :first_name, :last_name, :created_date) RETURNING ROWID
 "
 
 const SQL_UPDATE_USER = "

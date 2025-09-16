@@ -10,7 +10,7 @@
         @test user_dict[:last_name] == "Gala"
         @test user_dict[:username] == "missy"
         @test user_dict[:password] == "gala"
-        @test user_dict[:created_at] == DateTime("2021-01-01T00:00:00")
+        @test user_dict[:created_date] == DateTime("2021-01-01T00:00:00")
         @test user_dict[:is_admin] == false
     end
 

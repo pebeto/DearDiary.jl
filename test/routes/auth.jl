@@ -24,7 +24,7 @@
         end
 
         @testset verbose = true "without authorization header" begin
-            response = HTTP.get("http://127.0.0.1:9000/user/default"; status_exception=false)
+            response = HTTP.get("http://127.0.0.1:9000/user/1"; status_exception=false)
 
             @test response.status == HTTP.StatusCodes.UNAUTHORIZED
         end
@@ -36,7 +36,7 @@
 
                 token = response.body |> String |> JSON.parse
 
-                response = HTTP.get("http://127.0.0.1:9000/user/default";
+                response = HTTP.get("http://127.0.0.1:9000/user/1";
                     headers=Dict("Authorization" => "Bearer $token"), status_exception=false)
 
                 @test response.status == HTTP.StatusCodes.OK

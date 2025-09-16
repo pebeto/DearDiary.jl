@@ -1,8 +1,8 @@
 @with_trackingapi_test_db begin
     @testset verbose = true "repository utils" begin
         @testset verbose = true "insert" begin
-            @test TrackingAPI.insert(TrackingAPI.SQL_INSERT_USER, (username="missy", password="gala", first_name="Missy", last_name="Gala", created_at=now())) == TrackingAPI.CREATED
-            @test TrackingAPI.insert(TrackingAPI.SQL_INSERT_USER, (username="gala", password="missy", first_name="Gala", last_name="Missy", created_at=now())) == TrackingAPI.CREATED
+            @test TrackingAPI.insert(TrackingAPI.SQL_INSERT_USER, (username="missy", password="gala", first_name="Missy", last_name="Gala", created_date=now())) isa Tuple{Integer,TrackingAPI.Created}
+            @test TrackingAPI.insert(TrackingAPI.SQL_INSERT_USER, (username="gala", password="missy", first_name="Gala", last_name="Missy", created_date=now())) isa Tuple{Integer,TrackingAPI.Created}
         end
 
         @testset verbose = true "fetch" begin
@@ -17,13 +17,13 @@
             users = TrackingAPI.SQL_SELECT_USERS |> TrackingAPI.fetch_all
 
             @test users isa Array{Dict{Symbol,Any},1}
-            @test (users |> length) == 2
+            @test (users |> length) == 3
         end
 
         @testset verbose = true "update" begin
-            user = TrackingAPI.fetch(TrackingAPI.SQL_SELECT_USER_BY_ID, (id=1,)) |> TrackingAPI.User
+            user = TrackingAPI.fetch(TrackingAPI.SQL_SELECT_USER_BY_ID, (id=2,)) |> TrackingAPI.User
 
-            @test TrackingAPI.update(TrackingAPI.SQL_UPDATE_USER, user; first_name="Ana", last_name=nothing) == TrackingAPI.UPDATED
+            @test TrackingAPI.update(TrackingAPI.SQL_UPDATE_USER, user; first_name="Ana", last_name=nothing) isa TrackingAPI.Updated
 
             user = TrackingAPI.fetch(TrackingAPI.SQL_SELECT_USER_BY_USERNAME, (username="missy",))
             @test user[:first_name] == "Ana"
@@ -31,7 +31,7 @@
         end
 
         @testset verbose = true "delete" begin
-            @test TrackingAPI.delete(TrackingAPI.SQL_DELETE_USER, 1)
+            @test TrackingAPI.delete(TrackingAPI.SQL_DELETE_USER, 2)
 
             @test TrackingAPI.fetch(TrackingAPI.SQL_SELECT_USER_BY_USERNAME, (username="missy",)) |> isnothing
         end

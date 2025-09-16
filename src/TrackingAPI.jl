@@ -13,18 +13,24 @@ using JSONWebTokens
 include("utils.jl")
 
 include("types/config.jl")
-include("types/enums.jl")
 include("types/utils.jl")
 include("types/user.jl")
+include("types/project.jl")
+include("types/userpermission.jl")
 
 include("repositories/sql/database.jl")
 include("repositories/sql/user.jl")
+include("repositories/sql/project.jl")
+include("repositories/sql/userpermission.jl")
 
 include("repositories/utils.jl")
 include("repositories/database.jl")
 include("repositories/user.jl")
+include("repositories/project.jl")
+include("repositories/userpermission.jl")
 
 include("services/user.jl")
+include("services/project.jl")
 include("services/utils.jl")
 
 include("routes/utils.jl")
@@ -55,24 +61,25 @@ function AuthMiddleware(handler)
                     is_valid_payload =
                         all(claim -> haskey(payload, claim), ["sub", "id", "exp"])
                     if payload |> isnothing || !is_valid_payload
-                        throw |> ArgumentError("Invalid token payload")
+                        throw(ArgumentError("Invalid token payload"))
                     end
 
                     exp = get(payload, "exp", nothing)
                     if exp |> isnothing || (exp isa Integer && exp < (now() |> Dates.value))
-                        throw |> ArgumentError("Token expired")
+                        throw(ArgumentError("Token expired"))
                     end
 
                     user_id = get(payload, "id", 0)
                     is_valid_user_id = user_id isa Int && user_id > 0
                     if !is_valid_user_id
-                        throw |> ArgumentError("Invalid token payload")
+                        throw(ArgumentError("Invalid token payload"))
                     end
 
                     user = get_user_by_id(user_id)
                     if user |> isnothing
-                        throw |> ArgumentError("User not found")
+                        throw(ArgumentError("User not found"))
                     end
+                    request.context[:user] = user
                 catch e
                     msg = (e isa ArgumentError) ? e.msg : "Invalid token"
                     return json(("message" => msg);
@@ -83,6 +90,7 @@ function AuthMiddleware(handler)
         return handler(request)
     end
 end
+
 
 """
     run(; env_file::String=".env")
@@ -98,13 +106,11 @@ function run(; env_file::String=".env")
     global api_config = env_file |> load_config
     initialize_database()
 
-    UserCreatePayload("Default User", "", "default", "default") |> create_user
-
     health_router = router("/health", tags=["health"])
     @get health_router("/") get_health_handler
 
     user_router = router("/user", tags=["user"])
-    @get user_router("/{username}") get_user_by_username_handler
+    @get user_router("/{id}") get_user_by_id_handler
     @get user_router("/") get_users_handler
     @post user_router("/") create_user_handler
     @patch user_router("/{id}") update_user_handler

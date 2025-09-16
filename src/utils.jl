@@ -1,15 +1,22 @@
+abstract type UpsertResult end
+struct Created <: UpsertResult end
+struct Updated <: UpsertResult end
+struct Duplicate <: UpsertResult end
+struct Unprocessable <: UpsertResult end
+struct Error <: UpsertResult end
+
 """
-    load_config(file::String)
+    load_config(file::AbstractString)
 
 Load environment variables from a file.
 
 # Arguments
-- `file::String`: The path to the file containing environment variables.
+- `file::AbstractString`: The path to the file containing environment variables.
 
 # Returns
 An [`APIConfig`](@ref) object containing the loaded environment variables.
 """
-function load_config(file::String)::APIConfig
+function load_config(file::AbstractString)::APIConfig
     host = "localhost"
     port = 9000
     db_file = "trackingapi.db"

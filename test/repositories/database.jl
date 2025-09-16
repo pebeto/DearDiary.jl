@@ -17,7 +17,8 @@
         for row in rows
             @test row isa SQLite.Row
             @test keys(row) == [:name]
-            @test values(row) in [["user"], ["project"], ["user_project"]]
+            @test values(row) in [["user"], ["project"], ["user_project"], ["tag"],
+                ["project_tag"], ["user_permission"]]
         end
     end
 end
