@@ -77,6 +77,7 @@ include("services/project.jl")
 
 include("routes/health.jl")
 include("routes/user.jl")
+include("routes/project.jl")
 
 TrackingAPI.stop()
 file |> rm

@@ -1,5 +1,5 @@
 """
-    get_user_by_username_handler(request::HTTP.Request, username::String)::HTTP.Response
+    get_user_by_id_handler(request::HTTP.Request, id::Int)::HTTP.Response
 
 !!! warning
     This function is for route handling and should not be called directly.

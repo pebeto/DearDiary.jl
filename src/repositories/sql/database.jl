@@ -18,7 +18,7 @@ INSERT OR IGNORE INTO user (first_name, last_name, username, password, created_d
 const SQL_CREATE_PROJECT = "
 CREATE TABLE IF NOT EXISTS project (
     name TEXT NOT NULL CHECK (name <> ''),
-    description TEXT,
+    description TEXT DEFAULT '',
     created_date TEXT NOT NULL CHECK (created_date <> '')
 )
 "

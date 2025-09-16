@@ -10,7 +10,8 @@
             @test project isa TrackingAPI.Project
             @test project.id == 1
             @test project.name == "Project Missy"
-            @test project.description |> ismissing
+            @test project.description |> isempty
+            @test project.created_date isa DateTime
         end
 
         @testset verbose = true "fetch all" begin

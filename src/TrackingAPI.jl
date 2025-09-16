@@ -36,6 +36,7 @@ include("services/utils.jl")
 include("routes/utils.jl")
 include("routes/health.jl")
 include("routes/user.jl")
+include("routes/project.jl")
 include("routes/auth.jl")
 
 function AuthMiddleware(handler)
@@ -115,6 +116,13 @@ function run(; env_file::String=".env")
     @post user_router("/") create_user_handler
     @patch user_router("/{id}") update_user_handler
     @delete user_router("/{id}") delete_user_handler
+
+    project_router = router("/project", tags=["project"])
+    @get project_router("/{id}") get_project_by_id_handler
+    @get project_router("/") get_projects_handler
+    @post project_router("/") create_project_handler
+    @patch project_router("/{id}") update_project_handler
+    @delete project_router("/{id}") delete_project_handler
 
     auth_router = router("/auth", tags=["auth"])
     @post auth_router("/") auth_handler

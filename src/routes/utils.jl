@@ -47,6 +47,9 @@ macro admin_required(function_definition)
                 return json(("message" => "Admin privileges required");
                     status=HTTP.StatusCodes.FORBIDDEN)
             end
+        else
+            @warn "Authentication is disabled. Handlers will be injected with the default admin user."
+            user = get_user_by_id(1)
         end
         $(function_body)
     end
