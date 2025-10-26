@@ -54,7 +54,8 @@ CREATE TABLE IF NOT EXISTS user_permission (
     update_permission INTEGER DEFAULT 0,
     delete_permission INTEGER DEFAULT 0,
     FOREIGN KEY(user_id) REFERENCES user(id),
-    FOREIGN KEY(project_id) REFERENCES project(id)
+    FOREIGN KEY(project_id) REFERENCES project(id),
+    UNIQUE(user_id, project_id)
 )
 "
 

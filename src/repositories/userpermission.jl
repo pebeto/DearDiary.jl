@@ -50,8 +50,9 @@ Insert a [`UserPermission`](@ref) record.
 # Returns
 - The inserted record ID. If an error occurs, `nothing` is returned.
 - An [`UpsertResult`](@ref). [`Created`](@ref) if the record was successfully created,
-[`Duplicate`](@ref) if the record already exists, [`Unprocessable`](@ref) if the record
-violates a constraint, and [`Error`](@ref) if an error occurred while creating the record.
+[`Duplicate`](@ref) if the record already exists (also for `user_id` and `project_id`
+combination), [`Unprocessable`](@ref) if the record violates a constraint, and
+[`Error`](@ref) if an error occurred while creating the record.
 """
 insert(::Type{<:UserPermission}, user_id::Integer,
     project_id::Integer)::Tuple{Union{Nothing,<:Integer},UpsertResult} =

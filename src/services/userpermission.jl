@@ -27,4 +27,5 @@ function create_userpermission(user_id::Integer, project_id::Integer,
         return nothing, Unprocessable()
     end
 
+    return insert(UserPermission, user_id, project_id)
 end
