@@ -64,6 +64,7 @@ include("repositories/database.jl")
 include("repositories/user.jl")
 include("repositories/project.jl")
 include("repositories/userpermission.jl")
+include("repositories/experiment.jl")
 include("repositories/utils.jl")
 
 include("services/user.jl")

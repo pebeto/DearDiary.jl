@@ -10,6 +10,8 @@ KeyConversionTrait(::Type{Dict{K,Any}}) where {K} =
 KeyConversionTrait(::Type{Dict{Symbol,Any}}) = WithSymbolKeys()
 KeyConversionTrait(::Type{Dict{String,Any}}) = WithStringKeys()
 
+Base.convert(::Type{Status}, value::Integer) = Status(value)
+
 convert_field_to_key(::WithSymbolKeys, field::Symbol) = field
 convert_field_to_key(::WithStringKeys, field::Symbol) = field |> String
 
@@ -28,8 +30,11 @@ function type_from_dict(::Type{T}, data::Dict{K,Any}, trait::KeyConversionTrait)
             return value
         end
 
-        if field_type == DateTime && !(value isa DateTime)
+        if DateTime <: field_type && !(value isa DateTime)
             try
+                if Nothing <: field_type && isempty(value)
+                    return nothing
+                end
                 return value |> DateTime
             catch e
                 throw(ArgumentError("Cannot convert value '$value' to DateTime for field $field: $e"))

@@ -45,7 +45,7 @@ SELECT
     u.is_admin
 FROM user u
 INNER JOIN user_permission up ON u.id = up.user_id
-WHERE up.project_id = :project_id
+WHERE up.project_id = :id
 "
 
 const SQL_INSERT_USER = "

@@ -13,21 +13,25 @@ using JSONWebTokens
 include("utils.jl")
 
 include("types/config.jl")
+include("types/enums.jl")
 include("types/utils.jl")
 include("types/user.jl")
 include("types/project.jl")
 include("types/userpermission.jl")
+include("types/experiment.jl")
 
 include("repositories/sql/database.jl")
 include("repositories/sql/user.jl")
 include("repositories/sql/project.jl")
 include("repositories/sql/userpermission.jl")
+include("repositories/sql/experiment.jl")
 
 include("repositories/utils.jl")
 include("repositories/database.jl")
 include("repositories/user.jl")
 include("repositories/project.jl")
 include("repositories/userpermission.jl")
+include("repositories/experiment.jl")
 
 include("services/utils.jl")
 include("services/user.jl")

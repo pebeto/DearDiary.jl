@@ -59,6 +59,19 @@ CREATE TABLE IF NOT EXISTS user_permission (
 )
 "
 
+const SQL_CREATE_EXPERIMENT = "
+CREATE TABLE IF NOT EXISTS experiment (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id INTEGER NOT NULL,
+    status_id INTEGER NOT NULL CHECK (status_id IN (1, 2, 3)),
+    name TEXT NOT NULL CHECK (name <> ''),
+    description TEXT DEFAULT '',
+    created_date TEXT NOT NULL CHECK (created_date <> ''),
+    end_date TEXT DEFAULT '',
+    FOREIGN KEY(project_id) REFERENCES project(id)
+)
+"
+
 const SQL_CREATE_TAG = "
 CREATE TABLE IF NOT EXISTS tag (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

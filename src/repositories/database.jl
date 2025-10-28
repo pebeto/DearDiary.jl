@@ -29,12 +29,13 @@ function initialize_database(; database::SQLite.DB=get_database())
     DBInterface.execute(database, "PRAGMA foreign_keys = ON")
 
     DBInterface.execute(database, SQL_CREATE_USER)
-    DBInterface.execute(database,replace(SQL_INSERT_DEFAULT_ADMIN_USER, "{password}" => GenerateFromPassword("default") |> String))
+    DBInterface.execute(database, replace(SQL_INSERT_DEFAULT_ADMIN_USER, "{password}" => GenerateFromPassword("default") |> String))
     DBInterface.execute(database, SQL_PREVENT_DEFAULT_USER_DELETION)
     DBInterface.execute(database, SQL_PREVENT_DEFAULT_USER_DEMOTE)
 
     DBInterface.execute(database, SQL_CREATE_PROJECT)
     DBInterface.execute(database, SQL_CREATE_USERPERMISSION)
+    DBInterface.execute(database, SQL_CREATE_EXPERIMENT)
 
     DBInterface.execute(database, SQL_CREATE_TAG)
     DBInterface.execute(database, SQL_CREATE_PROJECTTAG)

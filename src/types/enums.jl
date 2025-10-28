@@ -1,0 +1,1 @@
+@enum Status IN_PROGRESS = 1 STOPPED = 2 FINISHED = 3

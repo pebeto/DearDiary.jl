@@ -58,7 +58,7 @@ Fetch all [`User`](@ref) records associated with a specific project.
 An array of [`User`](@ref) objects.
 """
 fetch_all(::Type{<:User}, project_id::Integer)::Array{User,1} =
-    fetch_all(SQL_SELECT_USERS_BY_PROJECT_ID, (project_id=project_id,)) .|> User
+    fetch_all(SQL_SELECT_USERS_BY_PROJECT_ID, (id=project_id,)) .|> User
 
 """
     insert(::Type{<:User}, first_name::AbstractString, last_name::AbstractString,
