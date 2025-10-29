@@ -1,9 +1,3 @@
-"""
-    auth_handler(request::HTTP.Request, parameters::Json{UserLoginPayload})::HTTP.Response
-
-!!! warning
-    This function is for route handling and should not be called directly.
-"""
 function auth_handler(::HTTP.Request, parameters::Json{UserLoginPayload})::HTTP.Response
     user = parameters.payload.username |> get_user_by_username
 
@@ -12,14 +6,16 @@ function auth_handler(::HTTP.Request, parameters::Json{UserLoginPayload})::HTTP.
     end
 
     if !CompareHashAndPassword(user.password, parameters.payload.password)
-        return json(("message" => "Invalid credentials");
-            status=HTTP.StatusCodes.UNAUTHORIZED)
+        return json(
+            ("message" => "Invalid credentials");
+            status=HTTP.StatusCodes.UNAUTHORIZED,
+        )
     end
 
     claims = Dict(
         "sub" => user.username,
         "id" => user.id,
-        "exp" => (now() + Hour(1)) |> Dates.value
+        "exp" => (now() + Hour(1)) |> Dates.value,
     )
     encoding = JSONWebTokens.HS256(api_config.jwt_secret)
     token = JSONWebTokens.encode(encoding, claims)

@@ -27,8 +27,9 @@ Convert an [`UpsertResult`](@ref) type to its string representation in uppercase
 # Returns
 A string representation of the upsert result type in uppercase.
 """
-Base.String(upsert_result::UpsertResult) =
-    upsert_result |> typeof |> nameof |> String |> uppercase
+function Base.String(upsert_result::UpsertResult)::String
+    return upsert_result |> typeof |> nameof |> String |> uppercase
+end
 
 """
     @admin_required function_name(::HTTP.Request, args...)::HTTP.Response
@@ -44,8 +45,10 @@ macro admin_required(function_definition)
         if api_config.enable_auth
             user = request.context[:user]
             if !user.is_admin
-                return json(("message" => "Admin privileges required");
-                    status=HTTP.StatusCodes.FORBIDDEN)
+                return json(
+                    ("message" => "Admin privileges required");
+                    status=HTTP.StatusCodes.FORBIDDEN,
+                )
             end
         else
             @warn "Authentication is disabled. Handlers will be injected with the default admin user."
@@ -59,11 +62,9 @@ macro admin_required(function_definition)
 end
 
 """
-    @same_user_or_admin_required function_name(::HTTP.Request, id::Int,
-        args...)::HTTP.Response
+    @same_user_or_admin_required function_name(::HTTP.Request, id::Int, args...)::HTTP.Response
 
-A macro to enforce that the user making the request is either an administrator or the owner
-of the resource being accessed.
+A macro to enforce that the user making the request is either an administrator or the owner of the resource being accessed.
 """
 macro same_user_or_admin_required(function_definition)
     @assert function_definition.head == :function "The @owner_or_admin_required macro can only be applied to functions."
@@ -74,8 +75,10 @@ macro same_user_or_admin_required(function_definition)
         if api_config.enable_auth
             user = request.context[:user]
             if !user.is_admin && user.id != id
-                return json(("message" => "Access denied: Admin privileges or resource ownership required");
-                    status=HTTP.StatusCodes.FORBIDDEN)
+                return json(
+                    ("message" => "Access denied: Admin privileges or resource ownership required");
+                    status=HTTP.StatusCodes.FORBIDDEN,
+                )
             end
         end
         $(function_body)
