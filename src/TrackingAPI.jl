@@ -52,7 +52,6 @@ include("services/parameter.jl")
 include("services/metric.jl")
 
 include("routes/utils.jl")
-include("routes/health.jl")
 include("routes/user.jl")
 include("routes/project.jl")
 include("routes/userpermission.jl")
@@ -135,31 +134,19 @@ function run(; env_file::String=".env")
 
     initialize_database()
 
-    health_router = router("/health", tags=["health"])
-    @get health_router("/") get_health_handler
+    @get "/health" function (::HTTP.Request)
+        data = Dict(
+            "app_name" => TrackingAPI |> nameof |> String,
+            "package_version" => TrackingAPI |> pkgversion,
+            "server_time" => Dates.now(),
+        )
+        return json(data; status=HTTP.StatusCodes.OK)
+    end
 
-    user_router = router("/user", tags=["user"])
-    @get user_router("/{id}") get_user_by_id_handler
-    @get user_router("/") get_users_handler
-    @post user_router("/") create_user_handler
-    @patch user_router("/{id}") update_user_handler
-    @delete user_router("/{id}") delete_user_handler
-
-    project_router = router("/project", tags=["project"])
-    @get project_router("/{id}") get_project_by_id_handler
-    @get project_router("/") get_projects_handler
-    @post project_router("/") create_project_handler
-    @patch project_router("/{id}") update_project_handler
-    @delete project_router("/{id}") delete_project_handler
-
-    userpermission_router = router("/userpermission", tags=["userpermission"])
-    @get userpermission_router("/user/{user_id}/project/{project_id}") get_userpermission_by_user_and_project_handler
-    @post userpermission_router("/user/{user_id}/project/{project_id}") create_userpermission_handler
-    @patch userpermission_router("/{id}") update_userpermission_handler
-    @delete userpermission_router("/{id}") delete_userpermission_handler
-
-    auth_router = router("/auth", tags=["auth"])
-    @post auth_router("/") auth_handler
+    setup_user_routes()
+    setup_project_routes()
+    setup_userpermission_routes()
+    setup_auth_routes()
 
     serveparallel(;
         host=api_config.host,
