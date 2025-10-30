@@ -112,19 +112,8 @@ Delete a [`Experiment`](@ref) record. Also deletes all associated [`Iteration`](
 function delete_experiment(id::Integer)::Bool
     experiment = fetch(Experiment, id)
 
-    delete_iterations(experiment)
+    for iteration in get_iterations(experiment.id)
+        delete_iteration(iteration.id)
+    end
     return delete(Experiment, id)
 end
-
-"""
-    delete_experiments(project::Project)::Bool
-
-Delete all [`Experiment`](@ref) records associated with a given [`Project`](@ref).
-
-# Arguments
-- `project::Project`: The project whose experiments are to be deleted.
-
-# Returns
-`true` if the records were successfully deleted, `false` otherwise.
-"""
-delete_experiments(project::Project)::Bool = delete(Experiment, project)

@@ -32,8 +32,3 @@ const SQL_DELETE_ITERATION = """
     DELETE FROM iteration
     WHERE id = :id
     """
-
-const SQL_DELETE_ITERATIONS_BY_EXPERIMENT_ID = """
-    DELETE FROM iteration
-    WHERE experiment_id = :id
-    """

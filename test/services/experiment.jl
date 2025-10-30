@@ -126,54 +126,20 @@
         end
 
         @testset verbose = true "delete experiment" begin
-            @testset "single experiment" begin
-                user = TrackingAPI.get_user_by_username("default")
-                project_id, _ = TrackingAPI.create_project(
-                    user.id,
-                    TrackingAPI.ProjectCreatePayload("Experiment Service Project"),
-                )
-                experiment_id, _ = TrackingAPI.create_experiment(
-                    project_id,
-                    TrackingAPI.ExperimentCreatePayload(
-                        TrackingAPI.IN_PROGRESS,
-                        "Service Test Experiment",
-                    ),
-                )
-                @test TrackingAPI.delete_experiment(experiment_id)
-                @test TrackingAPI.get_experiment_by_id(experiment_id) |> isnothing
-            end
-
-            @testset "all experiments by project" begin
-                user = TrackingAPI.get_user_by_username("default")
-                project_id, _ = TrackingAPI.create_project(
-                    user.id,
-                    TrackingAPI.ProjectCreatePayload("Experiment Service Project"),
-                )
-                project = TrackingAPI.get_project_by_id(project_id)
-
-                TrackingAPI.create_experiment(
-                    project_id,
-                    TrackingAPI.ExperimentCreatePayload(
-                        TrackingAPI.IN_PROGRESS,
-                        "Service Test Experiment 1",
-                    ),
-                )
-                TrackingAPI.create_experiment(
-                    project_id,
-                    TrackingAPI.ExperimentCreatePayload(
-                        TrackingAPI.FINISHED,
-                        "Service Test Experiment 2",
-                    ),
-                )
-                experiments = TrackingAPI.get_experiments(project.id)
-                @test experiments |> length == 2
-
-                @test TrackingAPI.delete_experiments(project)
-
-                experiments = TrackingAPI.get_experiments(project.id)
-                @test experiments |> isempty
-
-            end
+            user = TrackingAPI.get_user_by_username("default")
+            project_id, _ = TrackingAPI.create_project(
+                user.id,
+                TrackingAPI.ProjectCreatePayload("Experiment Service Project"),
+            )
+            experiment_id, _ = TrackingAPI.create_experiment(
+                project_id,
+                TrackingAPI.ExperimentCreatePayload(
+                    TrackingAPI.IN_PROGRESS,
+                    "Service Test Experiment",
+                ),
+            )
+            @test TrackingAPI.delete_experiment(experiment_id)
+            @test TrackingAPI.get_experiment_by_id(experiment_id) |> isnothing
         end
     end
 end

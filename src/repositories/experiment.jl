@@ -35,7 +35,3 @@ function update(
 end
 
 delete(::Type{<:Experiment}, id::Integer)::Bool = delete(SQL_DELETE_EXPERIMENT, id)
-
-function delete(::Type{<:Experiment}, project::Project)::Bool
-    return delete(SQL_DELETE_EXPERIMENTS_BY_PROJECT_ID, project.id)
-end

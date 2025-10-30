@@ -99,16 +99,3 @@ Delete a [`Iteration`](@ref) record.
 `true` if the record was successfully deleted, `false` otherwise.
 """
 delete_iteration(id::Integer)::Bool = delete(Iteration, id)
-
-"""
-    delete_iterations(experiment::Experiment)::Bool
-
-Delete all [`Iteration`](@ref) records associated with a given [`Experiment`](@ref).
-
-# Arguments
-- `experiment::Experiment`: The experiment whose iterations are to be deleted.
-
-# Returns
-`true` if the records were successfully deleted, `false` otherwise.
-"""
-delete_iterations(experiment::Experiment)::Bool = delete(Iteration, experiment)

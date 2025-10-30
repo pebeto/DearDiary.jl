@@ -36,8 +36,3 @@ const SQL_DELETE_EXPERIMENT = """
     DELETE FROM experiment
     WHERE id = :id
     """
-
-const SQL_DELETE_EXPERIMENTS_BY_PROJECT_ID = """
-    DELETE FROM experiment
-    WHERE project_id = :id
-    """

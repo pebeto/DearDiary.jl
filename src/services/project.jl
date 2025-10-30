@@ -99,7 +99,9 @@ Delete a [`Project`](@ref) record. Also deletes all associated [`UserPermission`
 function delete_project(id::Integer)::Bool
     project = fetch(Project, id)
 
+    for experiment in get_experiments(project.id)
+        delete_experiment(experiment.id)
+    end
     delete(UserPermission, project)
-    delete_experiments(project)
     return delete(Project, id)
 end

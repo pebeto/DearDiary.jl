@@ -31,7 +31,3 @@ function update(
 end
 
 delete(::Type{<:Iteration}, id::Integer)::Bool = delete(SQL_DELETE_ITERATION, id)
-
-function delete(::Type{<:Iteration}, experiment::Experiment)::Bool
-    return delete(SQL_DELETE_ITERATIONS_BY_EXPERIMENT_ID, experiment.id)
-end

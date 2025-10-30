@@ -128,54 +128,22 @@
         end
 
         @testset verbose = true "delete" begin
-            @testset "single experiment" begin
-                user = TrackingAPI.get_user_by_username("default")
-                project_id, _ = TrackingAPI.create_project(
-                    user.id,
-                    TrackingAPI.ProjectCreatePayload("Experiment Project"),
-                )
-                experiment_id, _ = TrackingAPI.insert(
-                    TrackingAPI.Experiment,
-                    project_id,
-                    TrackingAPI.IN_PROGRESS |> Integer,
-                    "Test Experiment",
-                )
+            user = TrackingAPI.get_user_by_username("default")
+            project_id, _ = TrackingAPI.create_project(
+                user.id,
+                TrackingAPI.ProjectCreatePayload("Experiment Project"),
+            )
+            experiment_id, _ = TrackingAPI.insert(
+                TrackingAPI.Experiment,
+                project_id,
+                TrackingAPI.IN_PROGRESS |> Integer,
+                "Test Experiment",
+            )
 
-                @test TrackingAPI.delete(TrackingAPI.Experiment, experiment_id)
+            @test TrackingAPI.delete(TrackingAPI.Experiment, experiment_id)
 
-                experiment = TrackingAPI.fetch(TrackingAPI.Experiment, experiment_id)
-                @test experiment |> isnothing
-            end
-
-            @testset "all experiments by project" begin
-                user = TrackingAPI.get_user_by_username("default")
-                project_id, _ = TrackingAPI.create_project(
-                    user.id,
-                    TrackingAPI.ProjectCreatePayload("Experiment Project"),
-                )
-                project = TrackingAPI.fetch(TrackingAPI.Project, project_id)
-
-                TrackingAPI.insert(
-                    TrackingAPI.Experiment,
-                    project_id,
-                    TrackingAPI.IN_PROGRESS |> Integer,
-                    "Test Experiment 1",
-                )
-                TrackingAPI.insert(
-                    TrackingAPI.Experiment,
-                    project_id,
-                    TrackingAPI.FINISHED |> Integer,
-                    "Test Experiment 2",
-                )
-
-                experiments = TrackingAPI.fetch_all(TrackingAPI.Experiment, project_id)
-                @test (experiments |> length) == 2
-
-                @test TrackingAPI.delete(TrackingAPI.Experiment, project)
-
-                experiments = TrackingAPI.fetch_all(TrackingAPI.Experiment, project_id)
-                @test experiments |> isempty
-            end
+            experiment = TrackingAPI.fetch(TrackingAPI.Experiment, experiment_id)
+            @test experiment |> isnothing
         end
     end
 end

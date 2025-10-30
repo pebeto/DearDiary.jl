@@ -124,50 +124,22 @@
         end
 
         @testset verbose = true "delete iteration" begin
-            @testset "single iteration" begin
-                user = TrackingAPI.get_user_by_username("default")
-                project_id, _ = TrackingAPI.create_project(
-                    user.id,
-                    TrackingAPI.ProjectCreatePayload("Test project"),
-                )
-                experiment_id, _ = TrackingAPI.create_experiment(
-                    project_id,
-                    TrackingAPI.ExperimentCreatePayload(
-                        TrackingAPI.IN_PROGRESS,
-                        "Test experiment",
-                    ),
-                )
-                iteration_id, _ = TrackingAPI.create_iteration(experiment_id)
+            user = TrackingAPI.get_user_by_username("default")
+            project_id, _ = TrackingAPI.create_project(
+                user.id,
+                TrackingAPI.ProjectCreatePayload("Test project"),
+            )
+            experiment_id, _ = TrackingAPI.create_experiment(
+                project_id,
+                TrackingAPI.ExperimentCreatePayload(
+                    TrackingAPI.IN_PROGRESS,
+                    "Test experiment",
+                ),
+            )
+            iteration_id, _ = TrackingAPI.create_iteration(experiment_id)
 
-                @test TrackingAPI.delete_iteration(iteration_id)
-                @test TrackingAPI.get_iteration_by_id(iteration_id) |> isnothing
-            end
-
-            @testset "iterations by experiment" begin
-                user = TrackingAPI.get_user_by_username("default")
-                project_id, _ = TrackingAPI.create_project(
-                    user.id,
-                    TrackingAPI.ProjectCreatePayload("Test project"),
-                )
-                experiment_id, _ = TrackingAPI.create_experiment(
-                    project_id,
-                    TrackingAPI.ExperimentCreatePayload(
-                        TrackingAPI.IN_PROGRESS,
-                        "Test experiment",
-                    ),
-                )
-                experiment = TrackingAPI.get_experiment_by_id(experiment_id)
-
-                TrackingAPI.create_iteration(experiment_id)
-                TrackingAPI.create_iteration(experiment_id)
-                iterations = TrackingAPI.get_iterations(experiment.id)
-                @test iterations |> length == 2
-
-                @test TrackingAPI.delete_iterations(experiment)
-
-                iterations = TrackingAPI.get_iterations(experiment.id)
-                @test iterations |> isempty
-            end
+            @test TrackingAPI.delete_iteration(iteration_id)
+            @test TrackingAPI.get_iteration_by_id(iteration_id) |> isnothing
         end
     end
 end
