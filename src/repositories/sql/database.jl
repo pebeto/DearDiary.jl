@@ -83,6 +83,26 @@ const SQL_CREATE_ITERATION = """
     )
     """
 
+const SQL_CREATE_PARAMETER = """
+    CREATE TABLE IF NOT EXISTS parameter (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        iteration_id INTEGER NOT NULL,
+        key TEXT NOT NULL CHECK (key <> ''),
+        value TEXT NOT NULL CHECK (value <> ''),
+        FOREIGN KEY(iteration_id) REFERENCES iteration(id)
+    )
+    """
+
+const SQL_CREATE_METRIC = """
+    CREATE TABLE IF NOT EXISTS metric (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        iteration_id INTEGER NOT NULL,
+        key TEXT NOT NULL CHECK (key <> ''),
+        value REAL NOT NULL,
+        FOREIGN KEY(iteration_id) REFERENCES iteration(id)
+    )
+    """
+
 const SQL_CREATE_TAG = """
     CREATE TABLE IF NOT EXISTS tag (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

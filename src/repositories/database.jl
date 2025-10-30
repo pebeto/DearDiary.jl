@@ -39,6 +39,8 @@ function initialize_database(; database::SQLite.DB=get_database())
     DBInterface.execute(database, SQL_CREATE_USERPERMISSION)
     DBInterface.execute(database, SQL_CREATE_EXPERIMENT)
     DBInterface.execute(database, SQL_CREATE_ITERATION)
+    DBInterface.execute(database, SQL_CREATE_PARAMETER)
+    DBInterface.execute(database, SQL_CREATE_METRIC)
 
     DBInterface.execute(database, SQL_CREATE_TAG)
     DBInterface.execute(database, SQL_CREATE_PROJECTTAG)

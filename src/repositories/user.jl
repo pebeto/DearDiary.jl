@@ -20,7 +20,7 @@ function insert(
     last_name::AbstractString,
     username::AbstractString,
     password::AbstractString
-)::Tuple{Optional{<:Integer},UpsertResult}
+)::Tuple{Optional{<:Int64},UpsertResult}
     fields = (
         first_name=first_name,
         last_name=last_name,
@@ -33,9 +33,9 @@ end
 
 function update(
     ::Type{<:User}, id::Integer;
-    first_name::Optional{String}=nothing,
-    last_name::Optional{String}=nothing,
-    password::Optional{String}=nothing,
+    first_name::Optional{AbstractString}=nothing,
+    last_name::Optional{AbstractString}=nothing,
+    password::Optional{AbstractString}=nothing,
     is_admin::Optional{Bool}=nothing
 )::UpsertResult
     fields = (

@@ -13,7 +13,7 @@ Fields
 """
 struct APIConfig
     host::String
-    port::Integer
+    port::UInt16
     db_file::String
     jwt_secret::String
     enable_auth::Bool

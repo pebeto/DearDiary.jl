@@ -33,7 +33,7 @@ const SQL_DELETE_ITERATION = """
     WHERE id = :id
     """
 
-SQL_DELETE_ITERATIONS_BY_EXPERIMENT_ID = """
+const SQL_DELETE_ITERATIONS_BY_EXPERIMENT_ID = """
     DELETE FROM iteration
     WHERE experiment_id = :id
     """

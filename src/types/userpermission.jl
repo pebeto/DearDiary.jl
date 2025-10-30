@@ -13,9 +13,9 @@ Fields
 - `delete_permission`: Permission to delete resources.
 """
 struct UserPermission <: ResultType
-    id::Integer
-    user_id::Integer
-    project_id::Integer
+    id::Int64
+    user_id::Int64
+    project_id::Int64
     create_permission::Bool
     read_permission::Bool
     update_permission::Bool

@@ -22,7 +22,7 @@ An array of [`Project`](@ref) objects.
 get_projects()::Array{Project,1} = Project |> fetch_all
 
 """
-    create_project(user_id::Integer, project_payload::ProjectCreatePayload)::Tuple{Optional{<:Integer},UpsertResult}
+    create_project(user_id::Integer, project_payload::ProjectCreatePayload)::Tuple{Optional{<:Int64},UpsertResult}
 
 Create a [`Project`](@ref).
 
@@ -35,7 +35,7 @@ An [`UpsertResult`](@ref). [`Created`](@ref) if the record was successfully crea
 """
 function create_project(
     user_id::Integer, project_payload::ProjectCreatePayload
-)::Tuple{Optional{<:Integer},UpsertResult}
+)::Tuple{Optional{<:Int64},UpsertResult}
     user = user_id |> get_user_by_id
     if user |> isnothing || user.is_admin == 0
         return nothing, Unprocessable()
@@ -86,17 +86,17 @@ function update_project(id::Integer, project_payload::ProjectUpdatePayload)::Ups
 end
 
 """
-    delete_project(id::Int)::Bool
+    delete_project(id::Integer)::Bool
 
 Delete a [`Project`](@ref) record. Also deletes all associated [`UserPermission`](@ref) and [`Experiment`](@ref) records.
 
 # Arguments
-- `id::Int`: The id of the project to delete.
+- `id::Integer`: The id of the project to delete.
 
 # Returns
 `true` if the record was successfully deleted, `false` otherwise.
 """
-function delete_project(id::Int)::Bool
+function delete_project(id::Integer)::Bool
     project = fetch(Project, id)
 
     delete(UserPermission, project)

@@ -28,6 +28,8 @@
                 ["user_permission"],
                 ["experiment"],
                 ["iteration"],
+                ["parameter"],
+                ["metric"],
                 ["sqlite_sequence"],
             ]
             @test values(row) in table_names

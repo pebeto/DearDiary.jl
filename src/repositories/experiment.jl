@@ -13,7 +13,7 @@ end
 
 function insert(
     ::Type{<:Experiment}, project_id::Integer, status_id::Integer, name::AbstractString
-)::Tuple{Optional{<:Integer},UpsertResult}
+)::Tuple{Optional{<:Int64},UpsertResult}
     parameters = (
         project_id=project_id,
         status_id=status_id,
@@ -26,7 +26,7 @@ end
 function update(
     ::Type{<:Experiment}, id::Integer;
     status_id::Optional{Integer}=nothing,
-    name::Optional{String}=nothing,
+    name::Optional{AbstractString}=nothing,
     description::Optional{String}=nothing,
     end_date::Optional{DateTime}=nothing
 )::UpsertResult

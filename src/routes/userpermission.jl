@@ -1,5 +1,5 @@
 @admin_required function get_userpermission_by_user_and_project_handler(
-    request::HTTP.Request, user_id::Int, project_id::Int
+    request::HTTP.Request, user_id::Integer, project_id::Integer
 )::HTTP.Response
     response_userpermission = get_userpermission_by_user_and_project(user_id, project_id)
 
@@ -14,8 +14,8 @@ end
 
 @admin_required function create_userpermission_handler(
     request::HTTP.Request,
-    user_id::Int,
-    project_id::Int,
+    user_id::Integer,
+    project_id::Integer,
     parameters::Json{UserPermissionCreatePayload}
 )::HTTP.Response
     userpermission_id, upsert_result = create_userpermission(
@@ -28,7 +28,7 @@ end
 end
 
 @admin_required function update_userpermission_handler(
-    request::HTTP.Request, id::Int, parameters::Json{UserPermissionUpdatePayload}
+    request::HTTP.Request, id::Integer, parameters::Json{UserPermissionUpdatePayload}
 )::HTTP.Response
     upsert_result = update_userpermission(id, parameters.payload)
     upsert_status = upsert_result |> get_status_by_upsert_result
@@ -36,7 +36,7 @@ end
 end
 
 @admin_required function delete_userpermission_handler(
-    request::HTTP.Request, id::Int
+    request::HTTP.Request, id::Integer
 )::HTTP.Response
     success = id |> delete_userpermission
 

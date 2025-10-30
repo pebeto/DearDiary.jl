@@ -27,7 +27,7 @@ function get_experiments(project_id::Integer)::Array{Experiment,1}
 end
 
 """
-    create_experiment(project_id::Integer, experiment_payload::ExperimentCreatePayload)::Tuple{Optional{<:Integer},UpsertResult}
+    create_experiment(project_id::Integer, experiment_payload::ExperimentCreatePayload)::Tuple{Optional{<:Int64},UpsertResult}
 
 Create a [`Experiment`](@ref).
 
@@ -40,7 +40,7 @@ An [`UpsertResult`](@ref). [`Created`](@ref) if the record was successfully crea
 """
 function create_experiment(
     project_id::Integer, experiment_payload::ExperimentCreatePayload
-)::Tuple{Optional{<:Integer},UpsertResult}
+)::Tuple{Optional{<:Int64},UpsertResult}
     project = project_id |> get_project_by_id
     if project |> isnothing
         return nothing, Unprocessable()
@@ -99,17 +99,17 @@ function update_experiment(
 end
 
 """
-    delete_experiment(id::Int)::Bool
+    delete_experiment(id::Integer)::Bool
 
 Delete a [`Experiment`](@ref) record. Also deletes all associated [`Iteration`](@ref).
 
 # Arguments
-- `id::Int`: The id of the experiment to delete.
+- `id::Integer`: The id of the experiment to delete.
 
 # Returns
 `true` if the record was successfully deleted, `false` otherwise.
 """
-function delete_experiment(id::Int)::Bool
+function delete_experiment(id::Integer)::Bool
     experiment = fetch(Experiment, id)
 
     delete_iterations(experiment)

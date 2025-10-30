@@ -13,8 +13,8 @@ Fields
 - `end_date`: The date and time when the experiment ended, or `nothing` if it is still ongoing.
 """
 struct Experiment <: ResultType
-    id::Integer
-    project_id::Integer
+    id::Int64
+    project_id::Int64
     status_id::Status
     name::String
     description::String

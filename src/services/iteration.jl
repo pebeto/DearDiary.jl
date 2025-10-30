@@ -27,7 +27,7 @@ function get_iterations(experiment_id::Integer)::Array{Iteration,1}
 end
 
 """
-    create_iteration(experiment_id::Integer)::Tuple{Optional{<:Integer},UpsertResult}
+    create_iteration(experiment_id::Integer)::Tuple{Optional{<:Int64},UpsertResult}
 
 # Arguments
 - `experiment_id::Integer`: The id of the experiment to create the iteration for.
@@ -35,7 +35,7 @@ end
 # Returns
 An [`UpsertResult`](@ref). [`Created`](@ref) if the record was successfully created, [`Duplicate`](@ref) if the record already exists, [`Unprocessable`](@ref) if the record violates a constraint, and [`Error`](@ref) if an error occurred while creating the record.
 """
-function create_iteration(experiment_id::Integer)::Tuple{Optional{<:Integer},UpsertResult}
+function create_iteration(experiment_id::Integer)::Tuple{Optional{<:Int64},UpsertResult}
     experiment = experiment_id |> get_experiment_by_id
     if experiment |> isnothing
         return nothing, Unprocessable()
@@ -88,7 +88,7 @@ function update_iteration(
 end
 
 """
-    delete_iteration(id::Int)::Bool
+    delete_iteration(id::Integer)::Bool
 
 Delete a [`Iteration`](@ref) record.
 
@@ -98,7 +98,7 @@ Delete a [`Iteration`](@ref) record.
 # Returns
 `true` if the record was successfully deleted, `false` otherwise.
 """
-delete_iteration(id::Int)::Bool = delete(Iteration, id)
+delete_iteration(id::Integer)::Bool = delete(Iteration, id)
 
 """
     delete_iterations(experiment::Experiment)::Bool

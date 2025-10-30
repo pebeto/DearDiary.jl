@@ -11,8 +11,8 @@ Fields
 - `end_date`: The date and time when the iteration ended, or `nothing` if it is still ongoing.
 """
 struct Iteration <: ResultType
-    id::Integer
-    experiment_id::Integer
+    id::Int64
+    experiment_id::Int64
     notes::String
     created_date::DateTime
     end_date::Optional{DateTime}
@@ -24,7 +24,7 @@ end
 A struct representing the payload for updating an existing iteration.
 
 Fields
-- `notes`: Notes associated with the iteration.
+- `notes`: Notes associated with the iteration, or `nothing` if not updating.
 - `end_date`: The date and time when the iteration ended, or `nothing` if it is still ongoing.
 """
 struct IterationUpdatePayload <: UpsertType

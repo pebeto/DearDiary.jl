@@ -10,7 +10,7 @@ Fields
 - `created_date`: The date and time the project was created.
 """
 struct Project <: ResultType
-    id::Integer
+    id::Int64
     name::String
     description::String
     created_date::DateTime

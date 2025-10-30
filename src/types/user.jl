@@ -13,7 +13,7 @@ Fields
 - `is_admin`: Whether the user is an administrator.
 """
 struct User <: ResultType
-    id::Integer
+    id::Int64
     first_name::String
     last_name::String
     username::String

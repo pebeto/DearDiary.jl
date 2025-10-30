@@ -13,7 +13,7 @@ end
 
 function insert(
     ::Type{<:Iteration}, experiment_id::Integer
-)::Tuple{Optional{<:Integer},UpsertResult}
+)::Tuple{Optional{<:Int64},UpsertResult}
     parameters = (
         experiment_id=experiment_id,
         created_date=(now() |> string),
@@ -23,7 +23,7 @@ end
 
 function update(
     ::Type{<:Iteration}, id::Integer;
-    notes::Optional{String}=nothing,
+    notes::Optional{AbstractString}=nothing,
     end_date::Optional{DateTime}=nothing
 )::UpsertResult
     fields = (notes=notes, end_date=end_date)

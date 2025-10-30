@@ -15,7 +15,7 @@ end
 
 function insert(
     ::Type{<:UserPermission}, user_id::Integer, project_id::Integer
-)::Tuple{Optional{<:Integer},UpsertResult}
+)::Tuple{Optional{<:Int64},UpsertResult}
     return insert(SQL_INSERT_USERPERMISSION, (user_id=user_id, project_id=project_id))
 end
 

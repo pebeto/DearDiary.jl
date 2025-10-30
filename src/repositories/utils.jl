@@ -53,7 +53,7 @@ function fetch_all(
 end
 
 """
-    insert(query::AbstractString, parameters::NamedTuple)::Tuple{Optional{<:Integer},UpsertResult}
+    insert(query::AbstractString, parameters::NamedTuple)::Tuple{Optional{<:Int64},UpsertResult}
 
 Insert a record into the database.
 
@@ -67,7 +67,7 @@ Insert a record into the database.
 """
 function insert(
     query::AbstractString, parameters::NamedTuple
-)::Tuple{Optional{<:Integer},UpsertResult}
+)::Tuple{Optional{<:Int64},UpsertResult}
     try
         result = DBInterface.execute(get_database(), query, parameters)
         record_id = result |> first |> first

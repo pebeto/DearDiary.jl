@@ -48,7 +48,7 @@ An array of [`User`](@ref) objects.
 get_users_by_project_id(project_id::Integer)::Array{User,1} = fetch_all(User, project_id)
 
 """
-    create_user(user_payload::UserCreatePayload)::Tuple{Optional{<:Integer},UpsertResult}
+    create_user(user_payload::UserCreatePayload)::Tuple{Optional{<:Int64},UpsertResult}
 
 Create an [`User`](@ref).
 
@@ -60,7 +60,7 @@ An [`UpsertResult`](@ref). [`Created`](@ref) if the record was successfully crea
 """
 function create_user(
     user_payload::UserCreatePayload
-)::Tuple{Optional{<:Integer},UpsertResult}
+)::Tuple{Optional{<:Int64},UpsertResult}
     return insert(
         User,
         user_payload.first_name,
@@ -71,18 +71,18 @@ function create_user(
 end
 
 """
-    update_user(id::Int, user_payload::UserUpdatePayload)::UpsertResult
+    update_user(id::Integer, user_payload::UserUpdatePayload)::UpsertResult
 
 Update an [`User`](@ref).
 
 # Arguments
-- `id::Int`: The id of the user to update.
+- `id::Integer`: The id of the user to update.
 - `user_payload::UserUpdatePayload`: The payload for updating an user.
 
 # Returns
 An [`UpsertResult`](@ref). [`Updated`](@ref) if the record was successfully updated (or no fields were changed), [`Unprocessable`](@ref) if the record violates a constraint or if no fields were provided to update, and [`Error`](@ref) if an error occurred while updating the record.
 """
-function update_user(id::Int, user_payload::UserUpdatePayload)::UpsertResult
+function update_user(id::Integer, user_payload::UserUpdatePayload)::UpsertResult
     user = fetch(User, id)
     if user |> isnothing || (user_payload.first_name |> isnothing && user_payload.last_name |> isnothing && user_payload.password |> isnothing)
         return Unprocessable()
@@ -111,17 +111,17 @@ function update_user(id::Int, user_payload::UserUpdatePayload)::UpsertResult
 end
 
 """
-    delete_user(id::Int)::Bool
+    delete_user(id::Integer)::Bool
 
 Delete an [`User`](@ref). Also deletes all associated [`UserPermission`](@ref).
 
 # Arguments
-- `id::Int`: The id of the user to delete.
+- `id::Integer`: The id of the user to delete.
 
 # Returns
 `true` if the record was successfully deleted, `false` otherwise.
 """
-function delete_user(id::Int)::Bool
+function delete_user(id::Integer)::Bool
     user = fetch(User, id)
 
     delete(UserPermission, user)

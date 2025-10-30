@@ -1,4 +1,4 @@
-function get_project_by_id_handler(request::HTTP.Request, id::Int)::HTTP.Response
+function get_project_by_id_handler(request::HTTP.Request, id::Integer)::HTTP.Response
     response_project = id |> get_project_by_id
 
     if (response_project |> isnothing)
@@ -23,14 +23,14 @@ end
 end
 
 function update_project_handler(
-    request::HTTP.Request, id::Int, parameters::Json{ProjectUpdatePayload}
+    request::HTTP.Request, id::Integer, parameters::Json{ProjectUpdatePayload}
 )::HTTP.Response
     upsert_result = update_project(id, parameters.payload)
     upsert_status = upsert_result |> get_status_by_upsert_result
     return json(("message" => (upsert_result |> String)); status=upsert_status)
 end
 
-function delete_project_handler(request::HTTP.Request, id::Int)::HTTP.Response
+function delete_project_handler(request::HTTP.Request, id::Integer)::HTTP.Response
     success = id |> delete_project
 
     if !success

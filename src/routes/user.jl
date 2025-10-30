@@ -1,5 +1,5 @@
 @same_user_or_admin_required function get_user_by_id_handler(
-    request::HTTP.Request, id::Int
+    request::HTTP.Request, id::Integer
 )::HTTP.Response
     response_user = id |> get_user_by_id
 
@@ -24,7 +24,7 @@ end
 end
 
 @same_user_or_admin_required function update_user_handler(
-    request::HTTP.Request, id::Int, parameters::Json{UserUpdatePayload}
+    request::HTTP.Request, id::Integer, parameters::Json{UserUpdatePayload}
 )::HTTP.Response
     upsert_result = update_user(id, parameters.payload)
     upsert_status = upsert_result |> get_status_by_upsert_result
@@ -32,7 +32,7 @@ end
 end
 
 @same_user_or_admin_required function delete_user_handler(
-    request::HTTP.Request, id::Int
+    request::HTTP.Request, id::Integer
 )::HTTP.Response
     success = id |> delete_user
 

@@ -17,7 +17,7 @@ function get_userpermission_by_user_and_project(
 end
 
 """
-    create_userpermission(user_id::Integer, project_id::Integer, userpermission_payload::UserPermissionCreatePayload)::Tuple{Optional{<:Integer},UpsertResult}
+    create_userpermission(user_id::Integer, project_id::Integer, userpermission_payload::UserPermissionCreatePayload)::Tuple{Optional{<:Int64},UpsertResult}
 
 Create a [`UserPermission`](@ref).
 
@@ -33,7 +33,7 @@ function create_userpermission(
     user_id::Integer,
     project_id::Integer,
     userpermission_payload::UserPermissionCreatePayload
-)::Tuple{Optional{<:Integer},UpsertResult}
+)::Tuple{Optional{<:Int64},UpsertResult}
     user = user_id |> get_user_by_id
     if user |> isnothing
         return nothing, Unprocessable()
