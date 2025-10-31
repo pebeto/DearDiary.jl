@@ -14,5 +14,5 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/pebeto/TrackingAPI.jl",
+    repo="github.com/pebeto/TrackingAPI.jl.git",
 )
