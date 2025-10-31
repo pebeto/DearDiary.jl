@@ -4,10 +4,10 @@
 A struct representing a project with its details.
 
 Fields
-- `id`: The ID of the project.
-- `name`: The name of the project.
-- `description`: A brief description of the project.
-- `created_date`: The date and time the project was created.
+- `id::Int64`: The ID of the project.
+- `name::String`: The name of the project.
+- `description::String`: A brief description of the project.
+- `created_date::DateTime`: The date and time the project was created.
 """
 struct Project <: ResultType
     id::Int64
@@ -16,27 +16,10 @@ struct Project <: ResultType
     created_date::DateTime
 end
 
-"""
-    ProjectCreatePayload
-
-A struct that represents the payload for creating a project.
-
-Fields
-- `name`: The name of the project.
-"""
 struct ProjectCreatePayload <: UpsertType
     name::String
 end
 
-"""
-    ProjectUpdatePayload
-
-A struct that represents the payload for updating a project.
-
-Fields
-- `name`: The name of the project, or `nothing` if not updating.
-- `description`: A brief description of the project, or `nothing` if not updating.
-"""
 struct ProjectUpdatePayload <: UpsertType
     name::Optional{String}
     description::Optional{String}

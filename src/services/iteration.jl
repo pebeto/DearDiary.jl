@@ -91,9 +91,8 @@ Delete a [`Iteration`](@ref) record.
 function delete_iteration(id::Integer)::Bool
     iteration = fetch(Iteration, id)
 
-    println("missy")
-    println(delete_parameters(iteration))
-    println(delete_metrics(iteration))
-    println("gala")
+    delete_parameters(iteration)
+    delete_metrics(iteration)
+
     return delete(Iteration, id)
 end

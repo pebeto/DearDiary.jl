@@ -4,12 +4,12 @@
 A struct to hold the configuration for the API server.
 
 Fields
-- `host`: The host of the API server.
-- `port`: The port of the API server.
-- `db_file`: The path to the SQLite database file.
-- `jwt_secret`: The JWT secret for authentication.
-- `enable_auth`: Whether to enable authentication or not.
-- `enable_api`: Whether the API server is enabled or not.
+- `host::String`: The host of the API server.
+- `port::UInt16`: The port of the API server.
+- `db_file::String`: The path to the SQLite database file.
+- `jwt_secret::String`: The JWT secret for authentication.
+- `enable_auth::Bool`: Whether to enable authentication or not.
+- `enable_api::Bool`: Whether the API server is enabled or not.
 """
 struct APIConfig
     host::String

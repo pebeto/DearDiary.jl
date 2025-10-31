@@ -62,6 +62,20 @@ function create_experiment(
     end
     return experiment_id, experiment_upsert_result
 end
+
+"""
+    create_experiment(project_id::Integer, status::Status, name::AbstractString)::Tuple{Optional{<:Int64},UpsertResult}
+
+Create a [`Experiment`](@ref).
+
+# Arguments
+- `project_id::Integer`: The id of the project to create the experiment for.
+- `status::Status`: The status of the experiment.
+- `name::AbstractString`: The name of the experiment.
+
+# Returns
+An [`UpsertResult`](@ref). [`Created`](@ref) if the record was successfully created, [`Duplicate`](@ref) if the record already exists, [`Unprocessable`](@ref) if the record violates a constraint, and [`Error`](@ref) if an error occurred while creating the record.
+"""
 function create_experiment(
     project_id::Integer, status::Status, name::AbstractString
 )::Tuple{Optional{<:Int64},UpsertResult}
@@ -69,7 +83,7 @@ function create_experiment(
 end
 
 """
-    update_experiment(id::Integer, status::Optional{Status}, name::Optional{AbstractString}, description::Optional{AbstractString}, end_date::Optional{DateTime})::UpsertResult
+    update_experiment(id::Integer, status::Optional{Integer}, name::Optional{AbstractString}, description::Optional{AbstractString}, end_date::Optional{DateTime})::UpsertResult
 
 Update a [`Experiment`](@ref) record.
 
@@ -118,6 +132,22 @@ function update_experiment(
         end_date=end_date,
     )
 end
+
+"""
+    update_experiment(id::Integer, status::Optional{Status}, name::Optional{AbstractString}, description::Optional{AbstractString}, end_date::Optional{DateTime})::UpsertResult
+
+Update a [`Experiment`](@ref) record.
+
+# Arguments
+- `id::Integer`: The id of the experiment to update.
+- `status_id::Optional{Status}`: The new status of the experiment.
+- `name::Optional{AbstractString}`: The new name of the experiment.
+- `description::Optional{AbstractString}`: The new description of the experiment.
+- `end_date::Optional{DateTime}`: The new end date of the experiment.
+
+# Returns
+An [`UpsertResult`](@ref). [`Updated`](@ref) if the record was successfully updated (or no changes were made), [`Duplicate`](@ref) if the record already exists, [`Unprocessable`](@ref) if the record violates a constraint, and [`Error`](@ref) if an error occurred while creating the record.
+"""
 function update_experiment(
     id::Integer,
     status::Optional{Status},

@@ -1,14 +1,5 @@
-```@meta
-CurrentModule = TrackingAPI
-```
-
-# TrackingAPI
-
-Documentation for [TrackingAPI](https://github.com/pebeto/TrackingAPI.jl.git).
+# Index
+If you just want to click one link to get what you need, this is the place to be.
 
 ```@index
-```
-
-```@autodocs
-Modules = [TrackingAPI]
 ```
