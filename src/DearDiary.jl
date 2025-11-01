@@ -146,10 +146,6 @@ By default, the server will run on `127.0.0.1:9000`. You can change both the hos
 function run(; env_file::String=".env")
     global api_config = env_file |> load_config
 
-    if !api_config.enable_api
-        error("API server is disabled. Set DEARDIARY_ENABLE_API=true to enable it.")
-    end
-
     initialize_database()
 
     @get "/health" function (::HTTP.Request)

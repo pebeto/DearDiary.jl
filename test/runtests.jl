@@ -22,7 +22,6 @@ function create_test_env_file(;
     db_file::String="deardiary_test.db",
     jwt_secret::Union{String,Nothing}=nothing,
     enable_auth::Bool=false,
-    enable_api::Bool=false
 )::String
     file = ".env.deardiarytest"
 
@@ -34,7 +33,6 @@ function create_test_env_file(;
             write(io, "DEARDIARY_JWT_SECRET=$jwt_secret\n")
         end
         write(io, "DEARDIARY_ENABLE_AUTH=$enable_auth\n")
-        write(io, "DEARDIARY_ENABLE_API=$enable_api\n")
     end
     return file
 end
@@ -87,7 +85,7 @@ include("services/resource.jl")
 file |> rm
 
 # Auth tests
-file = create_test_env_file(; enable_auth=true, enable_api=true)
+file = create_test_env_file(; enable_auth=true)
 DearDiary.run(; env_file=file)
 
 include("routes/auth.jl")
@@ -97,7 +95,7 @@ DearDiary.stop()
 file |> rm
 
 # Route tests
-file = create_test_env_file(; enable_api=true)
+file = create_test_env_file()
 DearDiary.run(; env_file=file)
 
 include("routes/health.jl")

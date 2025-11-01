@@ -9,7 +9,6 @@ Fields
 - `db_file::String`: The path to the SQLite database file.
 - `jwt_secret::String`: The JWT secret for authentication.
 - `enable_auth::Bool`: Whether to enable authentication or not.
-- `enable_api::Bool`: Whether the API server is enabled or not.
 """
 struct APIConfig
     host::String
@@ -17,5 +16,4 @@ struct APIConfig
     db_file::String
     jwt_secret::String
     enable_auth::Bool
-    enable_api::Bool
 end

@@ -15,7 +15,6 @@ function load_config(file::AbstractString)::APIConfig
     db_file = "deardiary.db"
     jwt_secret = "deardiary_secret"
     enable_auth = false
-    enable_api = false
 
     if (file |> isfile)
         env_vars = Dict{String,String}()
@@ -41,12 +40,6 @@ function load_config(file::AbstractString)::APIConfig
         else
             enable_auth
         end
-
-        enable_api = if haskey(env_vars, "DEARDIARY_ENABLE_API")
-            parse(Bool, env_vars["DEARDIARY_ENABLE_API"])
-        else
-            enable_api
-        end
     end
-    return APIConfig(host, port, db_file, jwt_secret, enable_auth, enable_api)
+    return APIConfig(host, port, db_file, jwt_secret, enable_auth)
 end
