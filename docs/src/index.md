@@ -6,7 +6,7 @@ CurrentModule = Tracking
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 ```
 
-# Tracking
+# Tracking.jl
 *A lightweight but **powerful** experiment tracking tool for Julia.*
 
 ```@raw html
