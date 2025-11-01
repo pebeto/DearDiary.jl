@@ -1,4 +1,4 @@
-@with_tracking_test_db begin
+@with_deardiary_test_db begin
     @testset verbose = true "resource routes" begin
         dummy_file = "dummy.bin"
         try
@@ -15,7 +15,7 @@
                 project_id = project_data["project_id"]
 
                 experiment_payload = Dict(
-                    "status_id" => (Tracking.IN_PROGRESS |> Integer),
+                    "status_id" => (DearDiary.IN_PROGRESS |> Integer),
                     "name" => "Experiment for Resources",
                 ) |> JSON.json
                 experiment_response = HTTP.post(
@@ -49,7 +49,7 @@
                 )
                 @test response.status == HTTP.StatusCodes.OK
                 data = JSON.parse(response.body |> String, Dict{String,Any})
-                resource = data |> Tracking.Resource
+                resource = data |> DearDiary.Resource
                 @test resource.id isa Int
                 @test resource.experiment_id == 1
                 @test resource.name == "model_weights"
@@ -74,8 +74,8 @@
                 )
                 @test response.status == HTTP.StatusCodes.OK
                 data = JSON.parse(response.body |> String, Array{Dict{String,Any},1})
-                resources = data .|> Tracking.Resource
-                @test resources isa Array{Tracking.Resource,1}
+                resources = data .|> DearDiary.Resource
+                @test resources isa Array{DearDiary.Resource,1}
                 @test length(resources) == 2
             end
 
@@ -101,7 +101,7 @@
                     status_exception=false,
                 )
                 data = JSON.parse(response.body |> String, Dict{String,Any})
-                resource = data |> Tracking.Resource
+                resource = data |> DearDiary.Resource
                 @test resource.name == "model_weights_v2"
                 @test resource.description == "Updated model weights"
                 @test length(resource.data) == 1024

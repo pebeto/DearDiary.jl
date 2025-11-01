@@ -1,24 +1,24 @@
 # Miscellaneous
 ## Database
 ```@docs
-Tracking.initialize_database
-Tracking.get_database
+DearDiary.initialize_database
+DearDiary.get_database
 ```
 
 ## Enumerations
 ```@docs
-Tracking.Status
-Tracking.IN_PROGRESS
-Tracking.STOPPED
-Tracking.FINISHED
+DearDiary.Status
+DearDiary.IN_PROGRESS
+DearDiary.STOPPED
+DearDiary.FINISHED
 ```
 
 ## Marker types
 ```@docs
-Tracking.UpsertResult
-Tracking.Created
-Tracking.Updated
-Tracking.Duplicate
-Tracking.Unprocessable
-Tracking.Error
+DearDiary.UpsertResult
+DearDiary.Created
+DearDiary.Updated
+DearDiary.Duplicate
+DearDiary.Unprocessable
+DearDiary.Error
 ```

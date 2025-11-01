@@ -1,6 +1,6 @@
 # REST API
 ```@docs
-Tracking.APIConfig
-Tracking.run
-Tracking.stop
+DearDiary.APIConfig
+DearDiary.run
+DearDiary.stop
 ```

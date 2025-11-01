@@ -1,12 +1,12 @@
 push!(LOAD_PATH, "../src/")
 using Documenter
-using Tracking
+using DearDiary
 
-DocMeta.setdocmeta!(Tracking, :DocTestSetup, :(using Tracking); recursive=true)
+DocMeta.setdocmeta!(DearDiary, :DocTestSetup, :(using DearDiary); recursive=true)
 
 makedocs(;
-    modules=[Tracking],
-    sitename="$(Tracking |> nameof |> String).jl",
+    modules=[DearDiary],
+    sitename="$(DearDiary |> nameof |> String).jl",
     format=Documenter.HTML(;),
     pages=[
         "Home" => "index.md",
@@ -30,5 +30,5 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/pebeto/Tracking.jl",
+    repo="github.com/pebeto/DearDiary.jl",
 )

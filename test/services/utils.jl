@@ -1,6 +1,6 @@
 @testset verbose = true "service utilities" begin
     @testset verbose = true "transform object to Dict" begin
-        user = Tracking.User(
+        user = DearDiary.User(
             1,
             "Missy",
             "Gala",
@@ -9,7 +9,7 @@
             DateTime("2021-01-01T00:00:00"),
             false,
         )
-        user_dict = user |> Tracking.Dict
+        user_dict = user |> DearDiary.Dict
 
         @test user_dict isa Dict
         @test user_dict[:id] == 1
@@ -22,7 +22,7 @@
     end
 
     @testset verbose = true "compare result type object fields" begin
-        user = Tracking.User(
+        user = DearDiary.User(
             1,
             "Missy",
             "Gala",
@@ -31,7 +31,7 @@
             DateTime("2021-01-01T00:00:00"),
             false,
         )
-        @test !(Tracking.compare_object_fields(user; id=1))
-        @test Tracking.compare_object_fields(user; id=100)
+        @test !(DearDiary.compare_object_fields(user; id=1))
+        @test DearDiary.compare_object_fields(user; id=100)
     end
 end

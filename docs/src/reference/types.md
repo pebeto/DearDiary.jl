@@ -1,11 +1,11 @@
 # Types
 ```@docs
-Tracking.User
-Tracking.UserPermission
-Tracking.Project
-Tracking.Experiment
-Tracking.Iteration
-Tracking.Parameter
-Tracking.Metric
-Tracking.Resource
+DearDiary.User
+DearDiary.UserPermission
+DearDiary.Project
+DearDiary.Experiment
+DearDiary.Iteration
+DearDiary.Parameter
+DearDiary.Metric
+DearDiary.Resource
 ```

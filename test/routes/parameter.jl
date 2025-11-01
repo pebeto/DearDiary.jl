@@ -1,4 +1,4 @@
-@with_tracking_test_db begin
+@with_deardiary_test_db begin
     @testset verbose = true "parameter routes" begin
         @testset verbose = true "create parameter" begin
             project_payload = Dict("name" => "Parameter Project") |> JSON.json
@@ -11,7 +11,7 @@
             project_id = project_data["project_id"]
 
             experiment_payload = Dict(
-                "status_id" => (Tracking.IN_PROGRESS |> Integer),
+                "status_id" => (DearDiary.IN_PROGRESS |> Integer),
                 "name" => "Experiment for Parameters",
             ) |> JSON.json
             experiment_response = HTTP.post(
@@ -55,7 +55,7 @@
 
             @test response.status == HTTP.StatusCodes.OK
             data = JSON.parse(response.body |> String, Dict{String,Any})
-            parameter = data |> Tracking.Parameter
+            parameter = data |> DearDiary.Parameter
 
             @test parameter.id isa Int
             @test parameter.iteration_id == 1
@@ -78,9 +78,9 @@
 
             @test response.status == HTTP.StatusCodes.OK
             data = JSON.parse(response.body |> String, Array{Dict{String,Any},1})
-            parameters = data .|> Tracking.Parameter
+            parameters = data .|> DearDiary.Parameter
 
-            @test parameters isa Array{Tracking.Parameter,1}
+            @test parameters isa Array{DearDiary.Parameter,1}
             @test (parameters |> length) == 2
         end
 
@@ -104,7 +104,7 @@
                 status_exception=false,
             )
             data = JSON.parse(response.body |> String, Dict{String,Any})
-            parameter = data |> Tracking.Parameter
+            parameter = data |> DearDiary.Parameter
 
             @test parameter.key == "batch_size"
             @test parameter.value == "64"

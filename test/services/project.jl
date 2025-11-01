@@ -1,29 +1,29 @@
-@with_tracking_test_db begin
+@with_deardiary_test_db begin
     @testset verbose = true "project service" begin
         @testset verbose = true "create project" begin
             @testset verbose = true "with user_id as argument" begin
-                user_id, _ = Tracking.create_user("Missy", "Gala", "missy", "gala")
-                Tracking.update_user(user_id, nothing, nothing, nothing, true)
-                project_id, project_upsert_result = Tracking.create_project(
+                user_id, _ = DearDiary.create_user("Missy", "Gala", "missy", "gala")
+                DearDiary.update_user(user_id, nothing, nothing, nothing, true)
+                project_id, project_upsert_result = DearDiary.create_project(
                     user_id,
                     "Test Project",
                 )
 
-                @test project_upsert_result isa Tracking.Created
+                @test project_upsert_result isa DearDiary.Created
                 @test project_id isa Integer
             end
 
             @testset verbose = true "with no user_id as argument" begin
-                project_id, project_upsert_result = Tracking.create_project(
+                project_id, project_upsert_result = DearDiary.create_project(
                     "Test Project",
                 )
 
-                @test project_upsert_result isa Tracking.Created
+                @test project_upsert_result isa DearDiary.Created
                 @test project_id isa Integer
 
-                default_user = Tracking.get_user("default")
+                default_user = DearDiary.get_user("default")
 
-                userpermission = Tracking.get_userpermission(
+                userpermission = DearDiary.get_userpermission(
                     default_user.id,
                     project_id,
                 )
@@ -33,46 +33,46 @@
 
         @testset verbose = true "get project by id" begin
             @testset verbose = true "get project by existing id" begin
-                project = Tracking.get_project(1)
-                @test project isa Tracking.Project
+                project = DearDiary.get_project(1)
+                @test project isa DearDiary.Project
                 @test project.id == 1
                 @test project.name == "Test Project"
             end
 
             @testset verbose = true "get project by non-existing id" begin
-                project = Tracking.get_project(9999)
+                project = DearDiary.get_project(9999)
                 @test project |> isnothing
             end
         end
 
         @testset verbose = true "get projects" begin
-            projects = Tracking.get_projects()
+            projects = DearDiary.get_projects()
 
-            @test projects isa Array{Tracking.Project,1}
+            @test projects isa Array{DearDiary.Project,1}
             @test (projects |> length) == 2
             @test projects[1].id == 1
             @test projects[1].name == "Test Project"
         end
 
         @testset verbose = true "update project" begin
-            @test Tracking.update_project(
+            @test DearDiary.update_project(
                 1,
                 "Updated Test Project",
                 "Updated Description"
-            ) isa Tracking.Updated
+            ) isa DearDiary.Updated
 
-            project = Tracking.get_project(1)
+            project = DearDiary.get_project(1)
 
             @test project.name == "Updated Test Project"
             @test project.description == "Updated Description"
         end
 
         @testset verbose = true "delete project" begin
-            user = Tracking.get_user("default")
-            project_id, _ = Tracking.create_project(user.id, "Project to Delete")
+            user = DearDiary.get_user("default")
+            project_id, _ = DearDiary.create_project(user.id, "Project to Delete")
 
-            @test Tracking.delete_project(project_id)
-            @test Tracking.get_project(project_id) |> isnothing
+            @test DearDiary.delete_project(project_id)
+            @test DearDiary.get_project(project_id) |> isnothing
         end
     end
 end

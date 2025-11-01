@@ -1,16 +1,16 @@
-@with_tracking_test_db begin
+@with_deardiary_test_db begin
     @testset verbose = true "project repository" begin
         @testset verbose = true "insert" begin
-            @test Tracking.insert(
-                Tracking.Project,
+            @test DearDiary.insert(
+                DearDiary.Project,
                 "Project Missy",
-            ) isa Tuple{Integer,Tracking.Created}
+            ) isa Tuple{Integer,DearDiary.Created}
         end
 
         @testset verbose = true "fetch" begin
-            project = Tracking.fetch(Tracking.Project, 1)
+            project = DearDiary.fetch(DearDiary.Project, 1)
 
-            @test project isa Tracking.Project
+            @test project isa DearDiary.Project
             @test project.id == 1
             @test project.name == "Project Missy"
             @test project.description |> isempty
@@ -18,30 +18,30 @@
         end
 
         @testset verbose = true "fetch all" begin
-            Tracking.insert(Tracking.Project, "Project Gala")
+            DearDiary.insert(DearDiary.Project, "Project Gala")
 
-            projects = Tracking.Project |> Tracking.fetch_all
+            projects = DearDiary.Project |> DearDiary.fetch_all
 
-            @test projects isa Array{Tracking.Project,1}
+            @test projects isa Array{DearDiary.Project,1}
             @test (projects |> length) == 2
         end
 
         @testset verbose = true "update" begin
-            @test Tracking.update(
-                Tracking.Project, 1;
+            @test DearDiary.update(
+                DearDiary.Project, 1;
                 name="Project Choclo",
                 description="Updated project"
-            ) isa Tracking.Updated
+            ) isa DearDiary.Updated
 
-            project = Tracking.fetch(Tracking.Project, 1)
+            project = DearDiary.fetch(DearDiary.Project, 1)
 
             @test project.name == "Project Choclo"
             @test project.description == "Updated project"
         end
 
         @testset verbose = true "delete" begin
-            @test Tracking.delete(Tracking.Project, 1)
-            @test Tracking.fetch(Tracking.Project, 1) |> isnothing
+            @test DearDiary.delete(DearDiary.Project, 1)
+            @test DearDiary.fetch(DearDiary.Project, 1) |> isnothing
         end
     end
 end
