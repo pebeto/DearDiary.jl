@@ -34,7 +34,7 @@ struct ParameterUpdatePayload <: UpsertType
     value::Optional{String}
 end
 function ParameterUpdatePayload(
-    key::Optional{AbstractString}, value::Optional{Real}
+    key::Optional{AbstractString}, value::Real
 )::ParameterUpdatePayload
-    return ParameterUpdatePayload(key, (value |> isnothing) ? nothing : (value |> string))
+    return ParameterUpdatePayload(key, (value |> string))
 end

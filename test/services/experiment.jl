@@ -107,6 +107,13 @@
                 DearDiary.IN_PROGRESS,
                 "Service Test Experiment",
             )
+            DearDiary.create_iteration(experiment_id)
+            DearDiary.create_resource(
+                experiment_id,
+                "Test Resource",
+                UInt8[0x00, 0x01, 0x02],
+            )
+
             @test DearDiary.delete_experiment(experiment_id)
             @test (experiment_id |> DearDiary.get_experiment) |> isnothing
         end

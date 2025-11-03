@@ -70,6 +70,7 @@
         @testset verbose = true "delete project" begin
             user = DearDiary.get_user("default")
             project_id, _ = DearDiary.create_project(user.id, "Project to Delete")
+            DearDiary.create_experiment(project_id, DearDiary.IN_PROGRESS, "Test")
 
             @test DearDiary.delete_project(project_id)
             @test DearDiary.get_project(project_id) |> isnothing

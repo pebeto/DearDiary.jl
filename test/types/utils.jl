@@ -50,4 +50,60 @@
 
         @test_throws ArgumentError DearDiary.type_from_dict(TestType, dict)
     end
+
+    @testset verbose = true "error in unsupported key type" begin
+        dict = Dict(1 => "value1", 2 => "value2")
+
+        @test_throws ArgumentError DearDiary.type_from_dict(TestType, dict)
+    end
+
+    @testset verbose = true "error in datetime conversion" begin
+        struct DateType <: DearDiary.ResultType
+            timestamp::Union{DateTime,Nothing}
+        end
+
+        dict = Dict(:timestamp => "invalid date string")
+
+        @test_throws ArgumentError DearDiary.type_from_dict(DateType, dict)
+    end
+
+    @testset verbose = true "show method for ResultType" begin
+        struct ShowMethodTestType <: DearDiary.ResultType
+            a::Int
+            b::DateTime
+            c::Array{UInt8,1}
+        end
+
+        @testset "with UInt8 < 6" begin
+            obj = ShowMethodTestType(
+                1,
+                DateTime(2025, 11, 02, 0, 0, 0),
+                UInt8[1, 2, 3, 4, 5],
+            )
+            io = IOBuffer()
+            DearDiary.show(io, MIME"text/plain"(), obj)
+            output = String(take!(io))
+
+            @test occursin("ShowMethodTestType", output)
+            @test occursin("a = 1", output)
+            @test occursin("b = 2025-11-02T00:00:00", output)
+            @test occursin("c = UInt8[0x01, 0x02, 0x03, 0x04, 0x05]", output)
+        end
+
+        @testset "with UInt8 > 6" begin
+            obj = ShowMethodTestType(
+                1,
+                DateTime(2025, 11, 02, 0, 0, 0),
+                UInt8[1, 2, 3, 4, 5, 6, 7, 8, 9],
+            )
+            io = IOBuffer()
+            DearDiary.show(io, MIME"text/plain"(), obj)
+            output = String(take!(io))
+
+            @test occursin("ShowMethodTestType", output)
+            @test occursin("a = 1", output)
+            @test occursin("b = 2025-11-02T00:00:00", output)
+            @test occursin("c = UInt8[0x01, 0x02, 0x03, …, 0x07, 0x08, 0x09]", output)
+        end
+    end
 end

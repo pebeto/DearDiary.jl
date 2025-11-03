@@ -59,11 +59,13 @@ abstract type KeyConversionTrait end
 struct WithSymbolKeys <: KeyConversionTrait end
 struct WithStringKeys <: KeyConversionTrait end
 
-function KeyConversionTrait(::Type{Dict{K,Any}}) where {K}
-    throw(ArgumentError("Unsupported key type $K. Supported types are Symbol and String."))
+function KeyConversionTrait(::Type{D}) where {D<:AbstractDict}
+    K = D |> keytype
+    message = "missy Unsupported key type $K. Supported types are Symbol and String."
+    throw(ArgumentError(message))
 end
-KeyConversionTrait(::Type{Dict{Symbol,Any}}) = WithSymbolKeys()
-KeyConversionTrait(::Type{Dict{String,Any}}) = WithStringKeys()
+KeyConversionTrait(::Type{D}) where {D<:AbstractDict{Symbol,Any}} = WithSymbolKeys()
+KeyConversionTrait(::Type{D}) where {D<:AbstractDict{String,Any}} = WithStringKeys()
 
 convert_field_to_key(::WithSymbolKeys, field::Symbol) = field
 convert_field_to_key(::WithStringKeys, field::Symbol) = field |> String
@@ -73,7 +75,7 @@ convert_field_to_key(::WithStringKeys, field::Symbol) = field |> String
 
 Builds an instance of type `T` from a dictionary `data` with `trait` related to the type `K`. All the fields in the struct `T` must be present in the dictionary.
 """
-function type_from_dict(::Type{T}, data::Dict{K,Any})::T where {T,K}
+function type_from_dict(::Type{T}, data::AbstractDict)::T where {T}
     type_fields = T |> fieldnames
     values = map(type_fields) do field
         key = convert_field_to_key((data |> typeof |> KeyConversionTrait), field)
@@ -160,7 +162,7 @@ Show a pretty-printed representation of an array of [`ResultType`](@ref) types.
 # Returns
 Nothing, but prints the representation to the IO stream.
 """
-function Base.show(io::IO, ::MIME"text/plain", x::Array{T,1}) where {T<:ResultType}
+function Base.show(io::IO, ::MIME"text/plain", x::AbstractArray{T,1}) where {T<:ResultType}
     n = x |> length
     println(io, "$(n)-element Vector{$(T)}:")
     if n <= 6

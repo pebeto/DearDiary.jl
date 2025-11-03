@@ -66,7 +66,9 @@ end
 include("utils.jl")
 
 # Functional tests
+include("types/parameter.jl")
 include("types/utils.jl")
+include("types/enums.jl")
 
 include("repositories/database.jl")
 include("repositories/user.jl")
