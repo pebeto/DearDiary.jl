@@ -1,5 +1,5 @@
 """
-    Parameter
+    Parameter <: ResultType
 
 A struct representing a parameter with its details.
 

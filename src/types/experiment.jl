@@ -1,5 +1,5 @@
 """
-    Experiment
+    Experiment <: ResultType
 
 A struct representing an experiment within a project.
 

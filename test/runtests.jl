@@ -5,7 +5,6 @@ using Dates
 using Bcrypt
 using Compat
 using SQLite
-using Memoize
 
 using DearDiary
 
@@ -39,17 +38,27 @@ end
 
 macro with_deardiary_test_db(expr)
     quote
-        DearDiary.initialize_database()
+        is_api = !(DearDiary._DEARDIARY_APICONFIG |> isnothing)
+        if is_api
+            DearDiary.initialize_database(
+                ; file_name=DearDiary._DEARDIARY_APICONFIG.db_file,
+            )
+        else
+            DearDiary.initialize_database(
+                ; file_name="deardiary_offline_test.db",
+            )
+        end
 
         try
             $(expr |> esc)
         finally
-            if isdefined(Main, :api_config)
-                "deardiary_test.db" |> rm
+            if is_api
+                DearDiary.close_database()
+                DearDiary._DEARDIARY_APICONFIG.db_file |> rm
             else
-                "deardiary.db" |> rm
+                DearDiary.close_database()
+                "deardiary_offline_test.db" |> rm
             end
-            DearDiary.get_database |> memoize_cache |> empty!
         end
     end
 end
@@ -57,8 +66,6 @@ end
 include("utils.jl")
 
 # Functional tests
-file = create_test_env_file()
-
 include("types/utils.jl")
 
 include("repositories/database.jl")
@@ -81,8 +88,6 @@ include("services/iteration.jl")
 include("services/parameter.jl")
 include("services/metric.jl")
 include("services/resource.jl")
-
-file |> rm
 
 # Auth tests
 file = create_test_env_file(; enable_auth=true)

@@ -14,28 +14,28 @@ A marker type indicating that a record was successfully created.
 struct Created <: UpsertResult end
 
 """
-    Updated
+    Updated <: UpsertResult
 
 A marker type indicating that a record was successfully updated.
 """
 struct Updated <: UpsertResult end
 
 """
-    Duplicate
+    Duplicate <: UpsertResult
 
 A marker type indicating that a record already exists.
 """
 struct Duplicate <: UpsertResult end
 
 """
-    Unprocessable
+    Unprocessable <: UpsertResult
 
 A marker type indicating that a record violates a constraint and cannot be processed.
 """
 struct Unprocessable <: UpsertResult end
 
 """
-    Error
+    Error <: UpsertResult
 
 A marker type indicating that an error occurred while creating or updating a record.
 """

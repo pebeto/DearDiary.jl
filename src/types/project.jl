@@ -1,5 +1,5 @@
 """
-    Project
+    Project <: ResultType
 
 A struct representing a project with its details.
 

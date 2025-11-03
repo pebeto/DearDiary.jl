@@ -8,7 +8,6 @@ using Bcrypt
 using Compat
 using Oxygen
 using SQLite
-using Memoize
 
 include("utils.jl")
 
@@ -75,9 +74,13 @@ export get_parameter, get_parameters, create_parameter, update_parameter, delete
 export get_metric, get_metrics, create_metric, update_metric, delete_metric
 export get_resource, get_resources, create_resource, update_resource, delete_resource
 
+_DEARDIARY_APICONFIG::Union{APIConfig,Nothing} = nothing
+
 function AuthMiddleware(handler)
     return function (request::HTTP.Request)
-        if api_config.enable_auth
+        global _DEARDIARY_APICONFIG
+
+        if _DEARDIARY_APICONFIG.enable_auth
             is_auth_route = request.target |> startswith("/auth") && request.method == "POST"
             is_health_route = request.target |> startswith("/health") && request.method == "GET"
 
@@ -93,7 +96,10 @@ function AuthMiddleware(handler)
 
                 token = split(auth_header, " ")[2] |> string
                 jwt = JWT(; jwt=token)
-                key = JWKSymmetric(JWTs.MD_SHA256, api_config.jwt_secret |> Array{UInt8,1})
+                key = JWKSymmetric(
+                    JWTs.MD_SHA256,
+                    _DEARDIARY_APICONFIG.jwt_secret |> Array{UInt8,1},
+                )
                 validate!(jwt, key)
 
                 if jwt |> isvalid
@@ -135,7 +141,6 @@ function AuthMiddleware(handler)
     end
 end
 
-
 """
     run(; env_file::String=".env")
 
@@ -144,9 +149,9 @@ Starts the server.
 By default, the server will run on `127.0.0.1:9000`. You can change both the host and port by modifying the `.env` file specific entries. The environment variables are loaded from the `.env` file by default. You can change the file path by passing the `env_file` argument.
 """
 function run(; env_file::String=".env")
-    global api_config = env_file |> load_config
+    global _DEARDIARY_APICONFIG = env_file |> load_config
 
-    initialize_database()
+    initialize_database(; file_name=_DEARDIARY_APICONFIG.db_file)
 
     @get "/health" function (::HTTP.Request)
         data = Dict(
@@ -168,11 +173,12 @@ function run(; env_file::String=".env")
     setup_auth_routes()
 
     serveparallel(;
-        host=api_config.host,
-        port=api_config.port,
+        host=_DEARDIARY_APICONFIG.host,
+        port=_DEARDIARY_APICONFIG.port,
         async=true,
         middleware=[AuthMiddleware],
     )
+    @info "DearDiary server running on $(_DEARDIARY_APICONFIG.host):$(_DEARDIARY_APICONFIG.port)"
 end
 
 """
@@ -180,6 +186,12 @@ end
 
 Stops the server. Alias for `Oxygen.Core.terminate()`.
 """
-stop() = terminate()
+function stop()
+    close_database()
+    _DEARDIARY_APICONFIG = nothing
+
+    terminate()
+    @info "DearDiary server stopped."
+end
 
 end

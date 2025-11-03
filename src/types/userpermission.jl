@@ -1,5 +1,5 @@
 """
-    UserPermission
+    UserPermission <: ResultType
 
 A struct representing a user's permissions for a specific project.
 

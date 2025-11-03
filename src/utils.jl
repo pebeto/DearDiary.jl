@@ -1,5 +1,5 @@
 """
-    load_config(file::AbstractString)
+    load_config(file::AbstractString)::APIConfig
 
 Load environment variables from a file.
 

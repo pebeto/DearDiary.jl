@@ -1,5 +1,5 @@
 """
-    User
+    User <: ResultType
 
 A struct that represents a user.
 

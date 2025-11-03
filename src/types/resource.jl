@@ -1,5 +1,5 @@
 """
-    Resource
+    Resource <: ResultType
 
 A struct representing a resource associated with an experiment.
 

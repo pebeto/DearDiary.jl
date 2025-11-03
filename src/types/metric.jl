@@ -1,5 +1,5 @@
 """
-    Metric
+    Metric <: ResultType
 
 A struct representing a metric with its details.
 

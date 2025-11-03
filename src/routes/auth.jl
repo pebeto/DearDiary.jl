@@ -29,7 +29,11 @@ function setup_auth_routes()
             "exp" => (now() + Hour(1)) |> Dates.value,
         )
         jwt = JWT(; payload=claims)
-        key = JWKSymmetric(JWTs.MD_SHA256, api_config.jwt_secret |> Array{UInt8,1})
+        global _DEARDIARY_APICONFIG
+        key = JWKSymmetric(
+            JWTs.MD_SHA256,
+            _DEARDIARY_APICONFIG.jwt_secret |> Array{UInt8,1},
+        )
         sign!(jwt, key)
 
         return json(jwt |> string; status=HTTP.StatusCodes.OK)

@@ -1,5 +1,5 @@
 """
-    Iteration
+    Iteration <: ResultType
 
 A struct representing an iteration within an experiment.
 

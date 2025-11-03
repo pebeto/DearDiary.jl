@@ -3,6 +3,7 @@
 ```@docs
 DearDiary.initialize_database
 DearDiary.get_database
+DearDiary.close_database
 ```
 
 ## Enumerations

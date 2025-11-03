@@ -42,7 +42,8 @@ macro admin_required(function_definition)
     function_body = function_definition.args[2]
 
     wrapped_body = quote
-        if api_config.enable_auth
+        global _DEARDIARY_APICONFIG
+        if _DEARDIARY_APICONFIG.enable_auth
             user = request.context[:user]
             if !user.is_admin
                 return json(
@@ -72,7 +73,8 @@ macro same_user_or_admin_required(function_definition)
     function_body = function_definition.args[2]
 
     wrapped_body = quote
-        if api_config.enable_auth
+        global _DEARDIARY_APICONFIG
+        if _DEARDIARY_APICONFIG.enable_auth
             user = request.context[:user]
             if !user.is_admin && user.id != id
                 return json(
