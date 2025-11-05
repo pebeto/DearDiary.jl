@@ -26,9 +26,7 @@ makedocs(;
             "REST API" => "reference/api.md",
         ],
     ],
-    warnonly = [:cross_references, :missing_docs],
+    warnonly=[:cross_references, :missing_docs],
 )
 
-deploydocs(;
-    repo="github.com/pebeto/DearDiary.jl",
-)
+deploydocs(; repo="github.com/pebeto/DearDiary.jl.git", devbranch="dev")
