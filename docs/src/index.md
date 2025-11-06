@@ -11,11 +11,11 @@ CurrentModule = DearDiary
 
 ```@raw html
 <a class="github-button"
-  href="https://github.com/pebeto/DearDiary.jl"
+  href="https://github.com/JuliaAI/DearDiary.jl"
   data-icon="octicon-star"
   data-size="large"
   data-show-count="true"
-  aria-label="Star pebeto/DearDiary.jl on GitHub">
+  aria-label="Star JuliaAI/DearDiary.jl on GitHub">
   Star</a>
 ```
 
@@ -45,7 +45,7 @@ powerful solution specifically designed for Julia users.
 
 ## Contributing
 Contributions are welcome! If you find a bug or have a feature request, please open an
-issue on the [GitHub repository](https://github.com/pebeto/DearDiary.jl). Pull requests
+issue on the [GitHub repository](https://github.com/JuliaAI/DearDiary.jl). Pull requests
 are also encouraged. Please make sure to follow the existing
 [code style](https://github.com/JuliaDiff/BlueStyle) and include tests for any new
 features.

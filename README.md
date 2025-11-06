@@ -1,8 +1,8 @@
 # DearDiary.jl
 *A lightweight but **powerful** machine learning experiment tracking tool for Julia.*
 
-[![CI](https://github.com/pebeto/DearDiary.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/pebeto/DearDiary.jl/actions/workflows/CI.yml)
-[![codecov](https://codecov.io/github/pebeto/DearDiary.jl/graph/badge.svg?token=Z01WPRJDNR)](https://codecov.io/github/pebeto/DearDiary.jl)
+[![CI](https://github.com/JuliaAI/DearDiary.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaAI/DearDiary.jl/actions/workflows/CI.yml)
+[![codecov](https://codecov.io/github/JuliaAI/DearDiary.jl/graph/badge.svg?token=Z01WPRJDNR)](https://codecov.io/github/JuliaAI/DearDiary.jl)
 
 ## Features
 - A complete experiment tracking solution for Julia.
@@ -10,7 +10,7 @@
 - Portable and easy-to-use SQLite backend.
 - **Built in Julia**
 
-Learn to use it with the [Tutorial](https://pebeto.github.io/DearDiary.jl/dev/tutorial/).
+Learn to use it with the [Tutorial](https://juliaai.github.io/DearDiary.jl/dev/tutorial/).
 
 ## Installation
 You can install DearDiary.jl via the Julia package manager:
@@ -30,7 +30,7 @@ powerful solution specifically designed for Julia users.
 
 ## Contributing
 Contributions are welcome! If you find a bug or have a feature request, please open an
-issue on the [GitHub repository](https://github.com/pebeto/DearDiary.jl). Pull requests
+issue on the [GitHub repository](https://github.com/JuliaAI/DearDiary.jl). Pull requests
 are also encouraged. Please make sure to follow the existing
 [code style](https://github.com/JuliaDiff/BlueStyle) and include tests for any new
 features.
