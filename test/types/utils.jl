@@ -140,4 +140,13 @@
             @test occursin("⋮", output)
         end
     end
+
+    @testset "show method for creation processes NamedTuple" begin
+        creation_result = (id=123, status=DearDiary.Created())
+        io = IOBuffer()
+        DearDiary.show(io, MIME"text/plain"(), creation_result)
+        output = String(take!(io))
+
+        @test "(id = 123, status = DearDiary.Created())" == strip(output)
+    end
 end

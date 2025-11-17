@@ -190,8 +190,11 @@ function Base.show(io::IO, ::MIME"text/plain", x::AbstractArray{T,1}) where {T<:
     end
 end
 
-function Base.show(
-    io::IO, ::MIME"text/plain", x::NamedTuple{(:id, :status),T}
-) where {T<:Tuple{Optional{<:Int64},UpsertResult}}
-    print(io, "(id = $(x.id), status = $(x.status))")
+function Base.show(io::IO, ::MIME"text/plain", x::NamedTuple{K,V}) where {K,V}
+    print(io, "(")
+    for (i, key) in enumerate(K)
+        print(io, "$(key) = $(getfield(x, key))")
+        i < length(K) && print(io, ", ")
+    end
+    print(io, ")")
 end
