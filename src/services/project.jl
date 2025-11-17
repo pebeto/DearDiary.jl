@@ -39,18 +39,18 @@ function create_project(
 )::@NamedTuple{id::Optional{<:Int64},status::UpsertResult}
     user = user_id |> get_user
     if user |> isnothing || user.is_admin == 0
-        return nothing, Unprocessable()
+        return (id=nothing, status=Unprocessable())
     end
 
     project_id, project_upsert_result = insert(Project, name)
     if !(project_upsert_result isa Created)
-        return nothing, project_upsert_result
+        return (id=nothing, status=project_upsert_result)
     end
 
     _, userpermission_upsert_result = insert(UserPermission, user_id, project_id)
     if !(userpermission_upsert_result isa Created)
         delete(Project, project_id)
-        return nothing, userpermission_upsert_result
+        return (id=nothing, status=userpermission_upsert_result)
     end
     return (id=project_id, status=project_upsert_result)
 end
